@@ -57,9 +57,20 @@ typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
     NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"judgerComponent" owner:nil options:nil];
     
     // Find the view among nib contents (not too hard assuming there is only one view in it).
+    
+    UISwipeGestureRecognizer* swipeUpRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
+    
+    swipeUpRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+    
+    UISwipeGestureRecognizer* swipeDownRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
+    
+    swipeDownRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+    
     JudgerView* plainView = [nibContents lastObject];
-
     plainView.frame = *(detectedPlatesRect);
+    [plainView addGestureRecognizer:swipeUpRecognizer];
+    [plainView addGestureRecognizer:swipeDownRecognizer];
+    
     
     [self.view addSubview:plainView];
 }
@@ -67,20 +78,15 @@ typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
 
 //TO DO Recognize swipe 
 
-- (IBAction)swipedUp:(UISwipeGestureRecognizer *)sender {
-        if ( sender.direction | UISwipeGestureRecognizerDirectionLeft )
-            NSLog(@" *** SWIPE LEFT ***");
-        if ( sender.direction | UISwipeGestureRecognizerDirectionRight )
-            NSLog(@" *** SWIPE RIGHT ***");
-        if ( sender.direction | UISwipeGestureRecognizerDirectionDown )
-            NSLog(@" *** SWIPE DOWN ***");
-        if ( sender.direction | UISwipeGestureRecognizerDirectionUp )
-            NSLog(@" *** SWIPE UP ***");
-    }
-
-- (IBAction)swipedDown:(UISwipeGestureRecognizer *)sender {
+-(void) didSwipe: (UISwipeGestureRecognizer*) sender {
+    UISwipeGestureRecognizerDirection direction = sender.direction;
     
-    NSLog(@"Swiping down %lu", (unsigned long)sender.direction);
+    if(direction==UISwipeGestureRecognizerDirectionUp) {
+        
+    }
+    if(direction ==UISwipeGestureRecognizerDirectionDown) {
+        
+    }
 }
 
 

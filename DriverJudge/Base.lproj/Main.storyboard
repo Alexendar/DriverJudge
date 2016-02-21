@@ -142,9 +142,6 @@
                                     <constraint firstItem="xTa-bi-FGk" firstAttribute="centerY" secondItem="2V8-ZB-y37" secondAttribute="centerY" id="6Fm-fQ-67r"/>
                                     <constraint firstItem="xTa-bi-FGk" firstAttribute="centerX" secondItem="2V8-ZB-y37" secondAttribute="centerX" id="db3-QB-h66"/>
                                 </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="0EO-Ja-sYm" appends="YES" id="cYg-nj-HoS"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -161,16 +158,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nP-2o-4so" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="up" id="0EO-Ja-sYm">
-                    <connections>
-                        <action selector="swipedUp:" destination="oyN-d0-CBG" id="ifh-Ri-YdL"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="down" id="zkN-nD-Ymr">
-                    <connections>
-                        <action selector="swipedDown:" destination="oyN-d0-CBG" id="oho-kX-aNP"/>
-                    </connections>
-                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1019" y="163"/>
         </scene>

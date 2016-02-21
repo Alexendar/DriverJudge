@@ -7,6 +7,7 @@
 //
 
 #import "JudgerView.h"
+
 @interface JudgerView()
 @property (weak, nonatomic) IBOutlet UILabel *markLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imageFrame;
