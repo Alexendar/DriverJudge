@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  CameraViewController.h
 //  DriverJudge
 //
 //  Created by Aleksander on 20/02/16.
@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface CameraViewController :  UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 
 @end
-
