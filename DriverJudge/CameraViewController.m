@@ -5,12 +5,36 @@
 //  Created by Aleksander on 20/02/16.
 //  Copyright © 2016 Aleksander. All rights reserved.
 //
-
+@import AVFoundation;
 #import "CameraViewController.h"
-#import "CameraView.h"
-@interface CameraViewController ()
+#import "AAPLPreviewView.h"
 
-@property (weak, nonatomic) IBOutlet UIImageView *cameraView;
+static void * CapturingStillImageContext = &CapturingStillImageContext;
+static void * SessionRunningContext = &SessionRunningContext;
+
+typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
+    AVCamSetupResultSuccess,
+    AVCamSetupResultCameraNotAuthorized,
+    AVCamSetupResultSessionConfigurationFailed
+};
+
+@interface CameraViewController ()  <AVCaptureFileOutputRecordingDelegate>
+
+//Outlets
+@property (weak, nonatomic) IBOutlet
+    AAPLPreviewView *previewView;
+
+//Tracking
+
+@property (nonatomic) dispatch_queue_t sessionQueue;
+@property (nonatomic) AVCaptureSession *session;
+@property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
+
+//Setup? no idea wtf is happening yet
+@property (nonatomic) AVCamSetupResult setupResult;
+@property (nonatomic, getter=isSessionRunning) BOOL sessionRunning;
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
+
 
 @end
 
@@ -18,20 +42,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadCamera];
-}
-
-- (void) loadCamera {
-    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-
+    
 }
 
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    NSLog(@"Took a photo");
-}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

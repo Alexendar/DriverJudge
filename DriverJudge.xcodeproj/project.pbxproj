@@ -14,7 +14,8 @@
 		28684DA01C77E756002B0749 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28684D9E1C77E756002B0749 /* LaunchScreen.storyboard */; };
 		28684DA91C77E7F1002B0749 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DA81C77E7F1002B0749 /* LoginViewController.m */; };
 		28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DAB1C77E80F002B0749 /* CameraViewController.m */; };
-		28684DAF1C77E89F002B0749 /* CameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DAE1C77E89F002B0749 /* CameraView.m */; };
+		28AB32771C7A38F800BECA63 /* AAPLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */; };
+		28AB32781C7A38F800BECA63 /* AAPLPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +31,10 @@
 		28684DA81C77E7F1002B0749 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		28684DAA1C77E80F002B0749 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
 		28684DAB1C77E80F002B0749 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
-		28684DAD1C77E89F002B0749 /* CameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraView.h; sourceTree = "<group>"; };
-		28684DAE1C77E89F002B0749 /* CameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraView.m; sourceTree = "<group>"; };
+		28AB32731C7A38F800BECA63 /* AAPLAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLAppDelegate.h; sourceTree = "<group>"; };
+		28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLAppDelegate.m; sourceTree = "<group>"; };
+		28AB32751C7A38F800BECA63 /* AAPLPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLPreviewView.h; sourceTree = "<group>"; };
+		28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLPreviewView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,11 +70,13 @@
 				28684D931C77E756002B0749 /* AppDelegate.h */,
 				28684D941C77E756002B0749 /* AppDelegate.m */,
 				28684D991C77E756002B0749 /* Main.storyboard */,
-				28684DAD1C77E89F002B0749 /* CameraView.h */,
-				28684DAE1C77E89F002B0749 /* CameraView.m */,
 				28684D9C1C77E756002B0749 /* Assets.xcassets */,
 				28684D9E1C77E756002B0749 /* LaunchScreen.storyboard */,
 				28684DA11C77E756002B0749 /* Info.plist */,
+				28AB32731C7A38F800BECA63 /* AAPLAppDelegate.h */,
+				28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */,
+				28AB32751C7A38F800BECA63 /* AAPLPreviewView.h */,
+				28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */,
 				28684D901C77E756002B0749 /* Supporting Files */,
 				28684DA71C77E7F1002B0749 /* LoginViewController.h */,
 				28684DA81C77E7F1002B0749 /* LoginViewController.m */,
@@ -162,8 +167,9 @@
 			files = (
 				28684D951C77E756002B0749 /* AppDelegate.m in Sources */,
 				28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */,
-				28684DAF1C77E89F002B0749 /* CameraView.m in Sources */,
 				28684D921C77E756002B0749 /* main.m in Sources */,
+				28AB32781C7A38F800BECA63 /* AAPLPreviewView.m in Sources */,
+				28AB32771C7A38F800BECA63 /* AAPLAppDelegate.m in Sources */,
 				28684DA91C77E7F1002B0749 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -311,6 +317,7 @@
 				28684DA61C77E756002B0749 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
