@@ -6,10 +6,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -34,15 +34,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdp-u2-Ews">
-                                <rect key="frame" x="130" y="256" width="339" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="kVn-Ii-Jfx"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8hR-Ot-gTK">
                                 <rect key="frame" x="130" y="323" width="339" height="21"/>
                                 <constraints>
@@ -57,26 +48,35 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5y0-FZ-cmf">
-                                <rect key="frame" x="131" y="550" width="338" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="338" id="2sZ-7T-EEe"/>
-                                </constraints>
-                                <state key="normal" title="Click to register"/>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CUP-Sj-PMW">
                                 <rect key="frame" x="130" y="390" width="339" height="44"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ia6-2w-Kzs"/>
                                 </constraints>
-                                <state key="normal" title="Login">
+                                <state key="normal" title="Sign in">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <segue destination="oyN-d0-CBG" kind="show" id="Ea8-l4-WHE"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5y0-FZ-cmf">
+                                <rect key="frame" x="131" y="550" width="338" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="338" id="2sZ-7T-EEe"/>
+                                </constraints>
+                                <state key="normal" title="Click to sign up"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdp-u2-Ews">
+                                <rect key="frame" x="130" y="256" width="339" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="kVn-Ii-Jfx"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -102,28 +102,14 @@
                             <constraint firstItem="DR7-5G-fau" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="xcf-PR-3Vu"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="loginField" destination="cto-Ie-efr" id="b3j-5N-w1X"/>
+                        <outlet property="passField" destination="hW5-GX-QLp" id="g6S-Ea-obo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="261" y="163"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="gPh-kz-iBP">
-            <objects>
-                <viewController id="a3y-0d-sjh" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="F13-fN-hGV"/>
-                        <viewControllerLayoutGuide type="bottom" id="nJe-W1-ayK"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="bCZ-SW-pcN">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="94d-9N-ax6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1019" y="844"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="mlZ-PS-U4Z">
@@ -139,7 +125,26 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2V8-ZB-y37" customClass="AAPLPreviewView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ERROR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xTa-bi-FGk">
+                                        <rect key="frame" x="272.5" y="289" width="55" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="N3i-Lr-kyy"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="xTa-bi-FGk" firstAttribute="centerY" secondItem="2V8-ZB-y37" secondAttribute="centerY" id="6Fm-fQ-67r"/>
+                                    <constraint firstItem="xTa-bi-FGk" firstAttribute="centerX" secondItem="2V8-ZB-y37" secondAttribute="centerX" id="db3-QB-h66"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="0EO-Ja-sYm" appends="YES" id="cYg-nj-HoS"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -151,10 +156,21 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="overView" destination="uHP-ec-bfK" id="Hti-yy-ybv"/>
                         <outlet property="previewView" destination="2V8-ZB-y37" id="JM7-7J-SfC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nP-2o-4so" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="up" id="0EO-Ja-sYm">
+                    <connections>
+                        <action selector="swipedUp:" destination="oyN-d0-CBG" id="ifh-Ri-YdL"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="down" id="zkN-nD-Ymr">
+                    <connections>
+                        <action selector="swipedDown:" destination="oyN-d0-CBG" id="oho-kX-aNP"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1019" y="163"/>
         </scene>

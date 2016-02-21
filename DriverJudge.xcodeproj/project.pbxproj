@@ -16,6 +16,8 @@
 		28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DAB1C77E80F002B0749 /* CameraViewController.m */; };
 		28AB32771C7A38F800BECA63 /* AAPLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */; };
 		28AB32781C7A38F800BECA63 /* AAPLPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */; };
+		28AB327A1C7A56B000BECA63 /* judgerComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AB32791C7A56B000BECA63 /* judgerComponent.xib */; };
+		28AB32801C7A5D8800BECA63 /* JudgerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB327F1C7A5D8800BECA63 /* JudgerView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,9 @@
 		28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLAppDelegate.m; sourceTree = "<group>"; };
 		28AB32751C7A38F800BECA63 /* AAPLPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLPreviewView.h; sourceTree = "<group>"; };
 		28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLPreviewView.m; sourceTree = "<group>"; };
+		28AB32791C7A56B000BECA63 /* judgerComponent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = judgerComponent.xib; sourceTree = "<group>"; };
+		28AB327E1C7A5D8800BECA63 /* JudgerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JudgerView.h; path = ../JudgerView.h; sourceTree = "<group>"; };
+		28AB327F1C7A5D8800BECA63 /* JudgerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JudgerView.m; path = ../JudgerView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +75,9 @@
 				28684D931C77E756002B0749 /* AppDelegate.h */,
 				28684D941C77E756002B0749 /* AppDelegate.m */,
 				28684D991C77E756002B0749 /* Main.storyboard */,
+				28AB32791C7A56B000BECA63 /* judgerComponent.xib */,
+				28AB327E1C7A5D8800BECA63 /* JudgerView.h */,
+				28AB327F1C7A5D8800BECA63 /* JudgerView.m */,
 				28684D9C1C77E756002B0749 /* Assets.xcassets */,
 				28684D9E1C77E756002B0749 /* LaunchScreen.storyboard */,
 				28684DA11C77E756002B0749 /* Info.plist */,
@@ -152,6 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28AB327A1C7A56B000BECA63 /* judgerComponent.xib in Resources */,
 				28684DA01C77E756002B0749 /* LaunchScreen.storyboard in Resources */,
 				28684D9D1C77E756002B0749 /* Assets.xcassets in Resources */,
 				28684D9B1C77E756002B0749 /* Main.storyboard in Resources */,
@@ -166,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28684D951C77E756002B0749 /* AppDelegate.m in Sources */,
+				28AB32801C7A5D8800BECA63 /* JudgerView.m in Sources */,
 				28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */,
 				28684D921C77E756002B0749 /* main.m in Sources */,
 				28AB32781C7A38F800BECA63 /* AAPLPreviewView.m in Sources */,
