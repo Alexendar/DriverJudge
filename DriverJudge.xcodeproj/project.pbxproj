@@ -16,7 +16,7 @@
 		28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DAB1C77E80F002B0749 /* CameraViewController.m */; };
 		28AB32771C7A38F800BECA63 /* AAPLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */; };
 		28AB32781C7A38F800BECA63 /* AAPLPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */; };
-		28AB327A1C7A56B000BECA63 /* judgerComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AB32791C7A56B000BECA63 /* judgerComponent.xib */; };
+		28AB327A1C7A56B000BECA63 /* JudgerComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AB32791C7A56B000BECA63 /* JudgerComponent.xib */; };
 		28AB32801C7A5D8800BECA63 /* JudgerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB327F1C7A5D8800BECA63 /* JudgerView.m */; };
 /* End PBXBuildFile section */
 
@@ -37,7 +37,7 @@
 		28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLAppDelegate.m; sourceTree = "<group>"; };
 		28AB32751C7A38F800BECA63 /* AAPLPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLPreviewView.h; sourceTree = "<group>"; };
 		28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLPreviewView.m; sourceTree = "<group>"; };
-		28AB32791C7A56B000BECA63 /* judgerComponent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = judgerComponent.xib; sourceTree = "<group>"; };
+		28AB32791C7A56B000BECA63 /* JudgerComponent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JudgerComponent.xib; sourceTree = "<group>"; };
 		28AB327E1C7A5D8800BECA63 /* JudgerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JudgerView.h; path = ../JudgerView.h; sourceTree = "<group>"; };
 		28AB327F1C7A5D8800BECA63 /* JudgerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JudgerView.m; path = ../JudgerView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,22 +74,13 @@
 			children = (
 				28684D931C77E756002B0749 /* AppDelegate.h */,
 				28684D941C77E756002B0749 /* AppDelegate.m */,
-				28684D991C77E756002B0749 /* Main.storyboard */,
-				28AB32791C7A56B000BECA63 /* judgerComponent.xib */,
-				28AB327E1C7A5D8800BECA63 /* JudgerView.h */,
-				28AB327F1C7A5D8800BECA63 /* JudgerView.m */,
-				28684D9C1C77E756002B0749 /* Assets.xcassets */,
-				28684D9E1C77E756002B0749 /* LaunchScreen.storyboard */,
-				28684DA11C77E756002B0749 /* Info.plist */,
 				28AB32731C7A38F800BECA63 /* AAPLAppDelegate.h */,
 				28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */,
-				28AB32751C7A38F800BECA63 /* AAPLPreviewView.h */,
-				28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */,
+				28684D991C77E756002B0749 /* Main.storyboard */,
+				28AB32791C7A56B000BECA63 /* JudgerComponent.xib */,
+				28D3E6E11C7D025B0011811C /* ViewControllers */,
+				28D3E6E21C7D02850011811C /* Views */,
 				28684D901C77E756002B0749 /* Supporting Files */,
-				28684DA71C77E7F1002B0749 /* LoginViewController.h */,
-				28684DA81C77E7F1002B0749 /* LoginViewController.m */,
-				28684DAA1C77E80F002B0749 /* CameraViewController.h */,
-				28684DAB1C77E80F002B0749 /* CameraViewController.m */,
 			);
 			path = DriverJudge;
 			sourceTree = "<group>";
@@ -97,9 +88,34 @@
 		28684D901C77E756002B0749 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				28684D9C1C77E756002B0749 /* Assets.xcassets */,
 				28684D911C77E756002B0749 /* main.m */,
+				28684D9E1C77E756002B0749 /* LaunchScreen.storyboard */,
+				28684DA11C77E756002B0749 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		28D3E6E11C7D025B0011811C /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				28684DA71C77E7F1002B0749 /* LoginViewController.h */,
+				28684DA81C77E7F1002B0749 /* LoginViewController.m */,
+				28684DAA1C77E80F002B0749 /* CameraViewController.h */,
+				28684DAB1C77E80F002B0749 /* CameraViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		28D3E6E21C7D02850011811C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				28AB327E1C7A5D8800BECA63 /* JudgerView.h */,
+				28AB327F1C7A5D8800BECA63 /* JudgerView.m */,
+				28AB32751C7A38F800BECA63 /* AAPLPreviewView.h */,
+				28AB32761C7A38F800BECA63 /* AAPLPreviewView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,7 +176,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AB327A1C7A56B000BECA63 /* judgerComponent.xib in Resources */,
+				28AB327A1C7A56B000BECA63 /* JudgerComponent.xib in Resources */,
 				28684DA01C77E756002B0749 /* LaunchScreen.storyboard in Resources */,
 				28684D9D1C77E756002B0749 /* Assets.xcassets in Resources */,
 				28684D9B1C77E756002B0749 /* Main.storyboard in Resources */,
@@ -289,9 +305,20 @@
 		28684DA51C77E756002B0749 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = "DriverJudge/GPUImage.xcodeproj/**";
 				INFOPLIST_FILE = DriverJudge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = aleksander.DriverJudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -300,9 +327,20 @@
 		28684DA61C77E756002B0749 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = "DriverJudge/GPUImage.xcodeproj/**";
 				INFOPLIST_FILE = DriverJudge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = aleksander.DriverJudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

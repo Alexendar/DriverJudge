@@ -6,9 +6,11 @@
 //  Copyright © 2016 Aleksander. All rights reserved.
 //
 @import AVFoundation;
+
 #import "CameraViewController.h"
 #import "AAPLPreviewView.h"
 #import "JudgerView.h"
+#import "GPUImage.h"
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningContext = &SessionRunningContext;
@@ -89,7 +91,20 @@ typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
     }
 }
 
-
++(UIImage *)binarize : (UIImage *) sourceImage
+{
+    UIImage * grayScaledImg = [self toGrayscale:sourceImage];
+    GPUImagePicture *imageSource = [[GPUImagePicture alloc] initWithImage:grayScaledImg];
+    GPUImageAdaptiveThresholdFilter *stillImageFilter = [[GPUImageAdaptiveThresholdFilter alloc] init];
+    stillImageFilter.blurSize = 3.0;
+    
+    [imageSource addTarget:stillImageFilter];
+    [imageSource processImage];
+    
+    UIImage *imageWithAppliedThreshold = [stillImageFilter imageFromCurrentlyProcessedOutput];
+    //  UIImage *destImage = [thresholdFilter imageByFilteringImage:grayScaledImg];
+    return imageWithAppliedThreshold;
+}
 /*
 #pragma mark - Navigation
 
