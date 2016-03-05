@@ -9,19 +9,16 @@
 #import "JudgerView.h"
 
 @interface JudgerView()
-@property (weak, nonatomic) IBOutlet UILabel *markLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imageFrame;
 
 @end
 @implementation JudgerView
 
+- (void) setFrameColorForMark: (NSNumber*) mark   {
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    CGRect newFrame = CGRectMake(self.imageFrame.frame.origin.x, self.imageFrame.frame.origin.y, self.imageFrame.frame.size.width, self.imageFrame.frame.size.height/4);
-    self.markLabel.frame = newFrame;
-    [super drawRect:rect];
+    //TO DO zmiana koloru na podstawie markow
+
+    
 }
 
 

@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0EF8C50E6720C43E411E8765 /* libPods-DriverJudge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C31114ED3401F73F8518D3 /* libPods-DriverJudge.a */; };
+		28235F841C864C530009C7F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28235F831C864C530009C7F4 /* Main.storyboard */; };
+		2834CE981C7E7AE800B02B40 /* GPUImage+Binarizations.m in Sources */ = {isa = PBXBuildFile; fileRef = 2813D2D21C7E797600E39BC1 /* GPUImage+Binarizations.m */; };
+		2834CE9A1C7E7B6F00B02B40 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2834CE991C7E7B6F00B02B40 /* libGPUImage.a */; };
 		28684D921C77E756002B0749 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684D911C77E756002B0749 /* main.m */; };
 		28684D951C77E756002B0749 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684D941C77E756002B0749 /* AppDelegate.m */; };
-		28684D9B1C77E756002B0749 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28684D991C77E756002B0749 /* Main.storyboard */; };
 		28684D9D1C77E756002B0749 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28684D9C1C77E756002B0749 /* Assets.xcassets */; };
 		28684DA01C77E756002B0749 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28684D9E1C77E756002B0749 /* LaunchScreen.storyboard */; };
 		28684DA91C77E7F1002B0749 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DA81C77E7F1002B0749 /* LoginViewController.m */; };
@@ -21,11 +24,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00844D0F1C032D9CB11988D3 /* Pods-DriverJudge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriverJudge.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriverJudge/Pods-DriverJudge.debug.xcconfig"; sourceTree = "<group>"; };
+		27C31114ED3401F73F8518D3 /* libPods-DriverJudge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DriverJudge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2813D2D11C7E797600E39BC1 /* GPUImage+Binarizations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GPUImage+Binarizations.h"; sourceTree = "<group>"; };
+		2813D2D21C7E797600E39BC1 /* GPUImage+Binarizations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GPUImage+Binarizations.m"; sourceTree = "<group>"; };
+		28235F831C864C530009C7F4 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = ../../../.Trash/Main.storyboard; sourceTree = "<group>"; };
+		2834CE991C7E7B6F00B02B40 /* libGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGPUImage.a; path = "Pods/../build/Debug-iphoneos/libGPUImage.a"; sourceTree = "<group>"; };
 		28684D8D1C77E756002B0749 /* DriverJudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriverJudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28684D911C77E756002B0749 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		28684D931C77E756002B0749 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		28684D941C77E756002B0749 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		28684D9A1C77E756002B0749 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		28684D9C1C77E756002B0749 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28684D9F1C77E756002B0749 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		28684DA11C77E756002B0749 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -40,6 +48,7 @@
 		28AB32791C7A56B000BECA63 /* JudgerComponent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JudgerComponent.xib; sourceTree = "<group>"; };
 		28AB327E1C7A5D8800BECA63 /* JudgerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JudgerView.h; path = ../JudgerView.h; sourceTree = "<group>"; };
 		28AB327F1C7A5D8800BECA63 /* JudgerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JudgerView.m; path = ../JudgerView.m; sourceTree = "<group>"; };
+		8BF66998B5E216D1AEDF4DFB /* Pods-DriverJudge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriverJudge.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriverJudge/Pods-DriverJudge.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,17 +56,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2834CE9A1C7E7B6F00B02B40 /* libGPUImage.a in Frameworks */,
+				0EF8C50E6720C43E411E8765 /* libPods-DriverJudge.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2813D2CD1C7E75F000E39BC1 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				2813D2D11C7E797600E39BC1 /* GPUImage+Binarizations.h */,
+				2813D2D21C7E797600E39BC1 /* GPUImage+Binarizations.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		28684D841C77E756002B0749 = {
 			isa = PBXGroup;
 			children = (
 				28684D8F1C77E756002B0749 /* DriverJudge */,
 				28684D8E1C77E756002B0749 /* Products */,
+				2E51D2E5B2487D9993476BE3 /* Pods */,
+				D2B4D2089FCDE91B4ADEAB0B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,8 +98,9 @@
 				28684D941C77E756002B0749 /* AppDelegate.m */,
 				28AB32731C7A38F800BECA63 /* AAPLAppDelegate.h */,
 				28AB32741C7A38F800BECA63 /* AAPLAppDelegate.m */,
-				28684D991C77E756002B0749 /* Main.storyboard */,
+				28235F831C864C530009C7F4 /* Main.storyboard */,
 				28AB32791C7A56B000BECA63 /* JudgerComponent.xib */,
+				2813D2CD1C7E75F000E39BC1 /* Categories */,
 				28D3E6E11C7D025B0011811C /* ViewControllers */,
 				28D3E6E21C7D02850011811C /* Views */,
 				28684D901C77E756002B0749 /* Supporting Files */,
@@ -118,6 +141,24 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		2E51D2E5B2487D9993476BE3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				00844D0F1C032D9CB11988D3 /* Pods-DriverJudge.debug.xcconfig */,
+				8BF66998B5E216D1AEDF4DFB /* Pods-DriverJudge.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D2B4D2089FCDE91B4ADEAB0B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2834CE991C7E7B6F00B02B40 /* libGPUImage.a */,
+				27C31114ED3401F73F8518D3 /* libPods-DriverJudge.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -125,9 +166,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 28684DA41C77E756002B0749 /* Build configuration list for PBXNativeTarget "DriverJudge" */;
 			buildPhases = (
+				2E51A8C9F3932B78A88CD2D0 /* Check Pods Manifest.lock */,
 				28684D891C77E756002B0749 /* Sources */,
 				28684D8A1C77E756002B0749 /* Frameworks */,
 				28684D8B1C77E756002B0749 /* Resources */,
+				8EED601546EAFA79C364DDBB /* Embed Pods Frameworks */,
+				EB4954DB776734F5C25D730C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -179,23 +223,72 @@
 				28AB327A1C7A56B000BECA63 /* JudgerComponent.xib in Resources */,
 				28684DA01C77E756002B0749 /* LaunchScreen.storyboard in Resources */,
 				28684D9D1C77E756002B0749 /* Assets.xcassets in Resources */,
-				28684D9B1C77E756002B0749 /* Main.storyboard in Resources */,
+				28235F841C864C530009C7F4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2E51A8C9F3932B78A88CD2D0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8EED601546EAFA79C364DDBB /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriverJudge/Pods-DriverJudge-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EB4954DB776734F5C25D730C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriverJudge/Pods-DriverJudge-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		28684D891C77E756002B0749 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28684D921C77E756002B0749 /* main.m in Sources */,
+				2834CE981C7E7AE800B02B40 /* GPUImage+Binarizations.m in Sources */,
 				28684D951C77E756002B0749 /* AppDelegate.m in Sources */,
+				28AB32771C7A38F800BECA63 /* AAPLAppDelegate.m in Sources */,
 				28AB32801C7A5D8800BECA63 /* JudgerView.m in Sources */,
 				28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */,
-				28684D921C77E756002B0749 /* main.m in Sources */,
 				28AB32781C7A38F800BECA63 /* AAPLPreviewView.m in Sources */,
-				28AB32771C7A38F800BECA63 /* AAPLAppDelegate.m in Sources */,
 				28684DA91C77E7F1002B0749 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,14 +296,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		28684D991C77E756002B0749 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				28684D9A1C77E756002B0749 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		28684D9E1C77E756002B0749 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -258,7 +343,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -295,7 +380,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -304,21 +389,23 @@
 		};
 		28684DA51C77E756002B0749 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 00844D0F1C032D9CB11988D3 /* Pods-DriverJudge.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				HEADER_SEARCH_PATHS = "DriverJudge/GPUImage.xcodeproj/**";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				HEADER_SEARCH_PATHS = "DriverJudge/Framework/*/**";
 				INFOPLIST_FILE = DriverJudge/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-fobjc-arc",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = aleksander.DriverJudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -326,21 +413,23 @@
 		};
 		28684DA61C77E756002B0749 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BF66998B5E216D1AEDF4DFB /* Pods-DriverJudge.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				HEADER_SEARCH_PATHS = "DriverJudge/GPUImage.xcodeproj/**";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				HEADER_SEARCH_PATHS = "DriverJudge/Framework/*/**";
 				INFOPLIST_FILE = DriverJudge/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-fobjc-arc",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = aleksander.DriverJudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

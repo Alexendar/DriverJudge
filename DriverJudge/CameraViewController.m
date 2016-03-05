@@ -8,8 +8,7 @@
 @import AVFoundation;
 
 #import "CameraViewController.h"
-#import "AAPLPreviewView.h"
-#import "JudgerView.h"
+
 #import "GPUImage.h"
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
@@ -21,12 +20,8 @@ typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
     AVCamSetupResultSessionConfigurationFailed
 };
 
-@interface CameraViewController ()  <AVCaptureFileOutputRecordingDelegate>
-
-//Outlets
-@property (weak, nonatomic) IBOutlet
-    AAPLPreviewView *previewView;
-@property (strong, nonatomic) IBOutlet UIView *overView;
+@interface CameraViewController ()
+@property (strong, nonatomic) IBOutlet UIView *cameraView;
 
 //Tracking
 
@@ -35,9 +30,12 @@ typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 
 //Setup? no idea wtf is happening yet
-@property (nonatomic) AVCamSetupResult setupResult;
+
 @property (nonatomic, getter=isSessionRunning) BOOL sessionRunning;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
+
+@property (strong, nonatomic) GPUImageVideoCamera* videoCamera;
+@property (strong, nonatomic) GPUImageView *filteredVideoView;
 
 @end
 
@@ -45,10 +43,30 @@ typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    CGRect mockRect = CGRectMake(55,55,155,55);
-    [self drawJudgeRectangle:&mockRect];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    CGFloat screenHeight = screenRect.size.height;
+    [self setupCameraStreamWithWidth: screenWidth andHeight: screenHeight];
 
 }
+
+-(void) setupCameraStreamWithWidth: (CGFloat) viewWidth andHeight: (CGFloat) viewHeight {
+    self.videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetiFrame960x540 cameraPosition:AVCaptureDevicePositionBack];
+    
+    self.filteredVideoView = [[GPUImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, viewWidth, viewHeight)];
+    
+    [self.cameraView addSubview:self.filteredVideoView];
+    
+    [self.videoCamera addTarget:self.filteredVideoView];
+    
+    [self.videoCamera startCameraCapture];
+    [self catchPhotos];
+}
+
+-(void) catchPhotos {
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -56,7 +74,7 @@ typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
 }
 
 - (void) drawJudgeRectangle: (CGRect*) detectedPlatesRect {
-    NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"judgerComponent" owner:nil options:nil];
+    NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"JudgerComponent" owner:nil options:nil];
     
     // Find the view among nib contents (not too hard assuming there is only one view in it).
     
@@ -68,51 +86,21 @@ typedef NS_ENUM( NSInteger, AVCamSetupResult ) {
     
     swipeDownRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
     
-    JudgerView* plainView = [nibContents lastObject];
-    plainView.frame = *(detectedPlatesRect);
-    [plainView addGestureRecognizer:swipeUpRecognizer];
-    [plainView addGestureRecognizer:swipeDownRecognizer];
     
-    
-    [self.view addSubview:plainView];
 }
 
-
-//TO DO Recognize swipe 
-
--(void) didSwipe: (UISwipeGestureRecognizer*) sender {
+- (IBAction)didSwipe:(UISwipeGestureRecognizer*) sender {
     UISwipeGestureRecognizerDirection direction = sender.direction;
     
     if(direction==UISwipeGestureRecognizerDirectionUp) {
-        
+        NSLog(@"UP");
     }
     if(direction ==UISwipeGestureRecognizerDirectionDown) {
-        
+        NSLog(@"DOWN");
     }
 }
 
-+(UIImage *)binarize : (UIImage *) sourceImage
-{
-    UIImage * grayScaledImg = [self toGrayscale:sourceImage];
-    GPUImagePicture *imageSource = [[GPUImagePicture alloc] initWithImage:grayScaledImg];
-    GPUImageAdaptiveThresholdFilter *stillImageFilter = [[GPUImageAdaptiveThresholdFilter alloc] init];
-    stillImageFilter.blurSize = 3.0;
-    
-    [imageSource addTarget:stillImageFilter];
-    [imageSource processImage];
-    
-    UIImage *imageWithAppliedThreshold = [stillImageFilter imageFromCurrentlyProcessedOutput];
-    //  UIImage *destImage = [thresholdFilter imageByFilteringImage:grayScaledImg];
-    return imageWithAppliedThreshold;
-}
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+
 
 @end
