@@ -14,10 +14,10 @@
 #warning przesunac te punkty o polowe ekranu? najpierw te z slope>900000
     if(_start.x<=1 && _start.y <=1 && _end.x <=1 && _end.y <=1){
     _start.x =(frameScale.size.width/2)*_start.x +frameScale.size.width/2;
-        _start.y =(frameScale.size.height/2)*_start.y +frameScale.size.height/2;
-        _end.x =(frameScale.size.width/2)*_end.x + frameScale.size.width/2;
-        _end.y =(frameScale.size.height/2)*_end.y + frameScale.size.height/2;
-    NSLog(@"2 %f,%f to %f,%f", _start.x, _start.y, _end.x, _end.y );
+    _start.y =(frameScale.size.height/2)*_start.y +frameScale.size.height/2;
+    _end.x =(frameScale.size.width/2)*_end.x + frameScale.size.width/2;
+    _end.y =(frameScale.size.height/2)*_end.y + frameScale.size.height/2;
+    NSLog(@"od %f,%f do %f,%f", _start.x, _start.y, _end.x, _end.y );
     }
 }
 

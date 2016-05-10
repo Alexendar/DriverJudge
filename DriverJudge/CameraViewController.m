@@ -210,37 +210,21 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     {
         GLfloat slope = lineSlopeAndIntercepts[currentLineIndex++];
         GLfloat intercept = lineSlopeAndIntercepts[currentLineIndex++];
-            
+        Line *line = [[Line alloc] init];
         //y = slope* x + intercept, y=mx+b
+        //widac ze sa przesuniete o 50-100, jesli obraz jest po srodku rysuje sie dobrze, jesli w lewo to przesuwa w prawo i odwrotnie
         if (slope > 9000.0)
         {
-            lineCoordinates[currentVertexIndex++] = -1;
-            lineCoordinates[currentVertexIndex++] = intercept;
-            lineCoordinates[currentVertexIndex++] = 1;
-            lineCoordinates[currentVertexIndex++] = intercept;
-        
-          }
+           line.start = CGPointMake(intercept,-1);
+           line.end = CGPointMake(intercept,1);
+        }
         else
         {
-          
-            lineCoordinates[currentVertexIndex++] = slope * -1.0 + intercept;
-            lineCoordinates[currentVertexIndex++] = -1;
-            lineCoordinates[currentVertexIndex++] = slope * 1.0 + intercept;
-            lineCoordinates[currentVertexIndex++] = 1;
+            line.start = CGPointMake(-1, slope * -1.0 + intercept);
+            line.end = CGPointMake(1,  slope * 1.0 + intercept);
         }
-        float  startX =lineCoordinates[currentVertexIndex-3];
-        float  startY = lineCoordinates[currentVertexIndex-2];
-        float  endX = lineCoordinates[currentVertexIndex-1];
-        float  endY = lineCoordinates[currentVertexIndex];
-        CGPoint start = CGPointMake(startX, startY);
-        CGPoint end = CGPointMake(endX ,endY);
-        Line *line = [[Line alloc] init];
-        line.start= start;
-        line.end = end;
-        
-      //  glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, lineCoordinates);
-      //  glDrawArrays(GL_LINES, 0, ((unsigned int)numberOfLines * 2));
-        if(![self.linesArray containsObject:line])
+  
+        if(![self.linesArray containsObject:line] && line)
             [self.linesArray addObject:line];
     }
 }
@@ -286,10 +270,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     //return the one with most pixels
     for(int i =0; i<[lineArray count]; i++){
         Line *verticalLine = lineArray[i];
-        if(verticalLine.start.y ==-1 && verticalLine.end.y == 1){
+        if(verticalLine.start.x ==-1 && verticalLine.end.x == 1){
             [rectangleLines addObject:verticalLine];
-            
-        
+
         }
         
     }
