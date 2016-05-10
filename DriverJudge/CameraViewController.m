@@ -67,7 +67,6 @@
     self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     self.overviewLayer = [[CALayer alloc] init];
 
-    
     CGRect videoRect = CGRectMake(0,0,screenWidth,screenHeight);
     
     self.previewLayer.frame = videoRect;
@@ -164,7 +163,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         //NSLog(@"Frame number %d captured",self.numberOfCapturedFrames);
         
         GPUImageHoughTransformLineDetector *lineDetector = [[GPUImageHoughTransformLineDetector alloc] init];
-        lineDetector.lineDetectionThreshold = 0.2;
+#warning CHANGE TO SET THRESHOLD
+        lineDetector.lineDetectionThreshold = 0.3;
         
          lineDetector.linesDetectedBlock = ^(GLfloat *linesArray, NSUInteger numberOfLines, CMTime timeFrame){
              [self renderLinesFromArray:linesArray count:numberOfLines frameTime:timeFrame];
@@ -203,7 +203,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     shapeLayer.lineWidth = 1.0; //etc...
 
     // Iterate through and generate vertices from the slopes and intercepts
-    NSUInteger currentVertexIndex = 0;
     NSUInteger currentLineIndex = 0;
     NSUInteger maxLineIndex = numberOfLines *2;
     while(currentLineIndex < maxLineIndex)
@@ -215,16 +214,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         //widac ze sa przesuniete o 50-100, jesli obraz jest po srodku rysuje sie dobrze, jesli w lewo to przesuwa w prawo i odwrotnie
         if (slope > 9000.0)
         {
-           line.start = CGPointMake(intercept,-1);
-           line.end = CGPointMake(intercept,1);
+          
+           line.start = CGPointMake(intercept,-1.0);
+           line.end = CGPointMake(intercept,1.0);
         }
         else
         {
             line.start = CGPointMake(-1, slope * -1.0 + intercept);
-            line.end = CGPointMake(1,  slope * 1.0 + intercept);
+            line.end = CGPointMake(1, slope * 1.0 + intercept);
         }
   
-        if(![self.linesArray containsObject:line] && line)
+        if(![self.linesArray containsObject:line])
             [self.linesArray addObject:line];
     }
 }

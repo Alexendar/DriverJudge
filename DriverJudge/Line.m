@@ -12,6 +12,7 @@
 -(void) rescale:(CGRect)frameScale {
     
 #warning przesunac te punkty o polowe ekranu? najpierw te z slope>900000
+//teraz jest lustrzene odbicie albo przesuniecie
     if(_start.x<=1 && _start.y <=1 && _end.x <=1 && _end.y <=1){
     _start.x =(frameScale.size.width/2)*_start.x +frameScale.size.width/2;
     _start.y =(frameScale.size.height/2)*_start.y +frameScale.size.height/2;
