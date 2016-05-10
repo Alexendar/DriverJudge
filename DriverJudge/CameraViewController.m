@@ -35,8 +35,6 @@
 @property (strong,nonatomic) JudgerView *judgerFrameView;
 
 @property (strong,nonatomic) NSMutableArray *linesArray;
-@property (weak,nonatomic) NSMutableArray *slopesArray;
-@property (weak,nonatomic) NSMutableArray *interceptsArray;
 
 @property (strong,nonatomic) NSMutableArray *intersectedLines;
 
@@ -208,8 +206,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSUInteger currentVertexIndex = 0;
     NSUInteger currentLineIndex = 0;
     NSUInteger maxLineIndex = numberOfLines *2;
-    self.slopesArray = [NSMutableArray new];
-    self.interceptsArray = [NSMutableArray new];
     while(currentLineIndex < maxLineIndex)
     {
         GLfloat slope = lineSlopeAndIntercepts[currentLineIndex++];
@@ -226,12 +222,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
           }
         else
         {
-          /*
+          
             lineCoordinates[currentVertexIndex++] = slope * -1.0 + intercept;
             lineCoordinates[currentVertexIndex++] = -1;
             lineCoordinates[currentVertexIndex++] = slope * 1.0 + intercept;
             lineCoordinates[currentVertexIndex++] = 1;
-    */
         }
         float  startX =lineCoordinates[currentVertexIndex-3];
         float  startY = lineCoordinates[currentVertexIndex-2];
