@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface CameraViewController :  UIViewController <UINavigationControllerDelegate>
-
+{
+    GLfloat *lineCoordinates;
+}
 
 @end

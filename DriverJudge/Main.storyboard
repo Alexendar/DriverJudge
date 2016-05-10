@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6ep-lC-cev">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="eT6-J7-4Bg">
+            <objects>
+                <viewController id="YH5-VR-rOZ" customClass="LoginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Rq9-aK-LwD"/>
+                        <viewControllerLayoutGuide type="bottom" id="3LH-wC-YDy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="742-2m-pBj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nDD-qJ-w2p">
+                                <rect key="frame" x="277" y="285" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="6ep-lC-cev" kind="show" id="b5j-XE-uyj"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nDD-qJ-w2p" firstAttribute="centerY" secondItem="742-2m-pBj" secondAttribute="centerY" id="IGD-BO-42Z"/>
+                            <constraint firstItem="nDD-qJ-w2p" firstAttribute="centerX" secondItem="742-2m-pBj" secondAttribute="centerX" id="et7-Py-W2J"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qbY-zo-nSe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="517" y="-141"/>
+        </scene>
+        <!--Camera View Controller-->
+        <scene sceneID="VD0-GR-nNv">
+            <objects>
+                <viewController id="6ep-lC-cev" customClass="CameraViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zg0-Dx-cBY"/>
+                        <viewControllerLayoutGuide type="bottom" id="abQ-N3-5Qf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zMO-fE-kdM">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jJw-tl-1eW">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qGL-Qm-Vxi">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </view>
+                            <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jwQ-T0-fXX">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Not connected." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E1Z-ne-khB">
+                                        <rect key="frame" x="51" y="0.0" width="363" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QJX-9Y-mLk">
+                                        <rect key="frame" x="0.0" y="0.0" width="43" height="41"/>
+                                        <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <state key="normal" title="⎋">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="retryButtonClicked:" destination="6ep-lC-cev" eventType="touchUpInside" id="K9L-l1-PZh"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="qGL-Qm-Vxi" firstAttribute="leading" secondItem="zMO-fE-kdM" secondAttribute="leading" id="DjQ-FX-djJ"/>
+                            <constraint firstItem="jJw-tl-1eW" firstAttribute="top" secondItem="zMO-fE-kdM" secondAttribute="top" id="Wde-wQ-SMk"/>
+                            <constraint firstItem="qGL-Qm-Vxi" firstAttribute="bottom" secondItem="abQ-N3-5Qf" secondAttribute="top" id="ZLV-X7-NHP"/>
+                            <constraint firstItem="jJw-tl-1eW" firstAttribute="bottom" secondItem="abQ-N3-5Qf" secondAttribute="top" id="fcL-l7-4A3"/>
+                            <constraint firstItem="qGL-Qm-Vxi" firstAttribute="top" secondItem="jJw-tl-1eW" secondAttribute="top" id="phH-QW-39H"/>
+                            <constraint firstItem="jJw-tl-1eW" firstAttribute="leading" secondItem="qGL-Qm-Vxi" secondAttribute="leading" id="rd3-zF-pUf"/>
+                            <constraint firstAttribute="trailing" secondItem="jJw-tl-1eW" secondAttribute="trailing" id="sus-7J-DGH"/>
+                            <constraint firstItem="jJw-tl-1eW" firstAttribute="trailing" secondItem="qGL-Qm-Vxi" secondAttribute="trailing" id="tqf-n5-QYV"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cameraView" destination="jJw-tl-1eW" id="TYE-Ef-c9S"/>
+                        <outlet property="gestureView" destination="jwQ-T0-fXX" id="y8L-dV-X0P"/>
+                        <outlet property="judgerView" destination="qGL-Qm-Vxi" id="aRL-dj-vhg"/>
+                        <outlet property="status" destination="E1Z-ne-khB" id="k5b-kh-vSu"/>
+                        <outlet property="swipeDownGesture" destination="aCx-TX-0hW" id="y8P-YN-1K4"/>
+                        <outlet property="swipeUpGesture" destination="2GW-Kb-3Em" id="4WV-4p-0zQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="17d-JQ-O8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="up" id="2GW-Kb-3Em">
+                    <connections>
+                        <action selector="swipeUp:" destination="6ep-lC-cev" id="zO0-zj-q86"/>
+                        <outlet property="delegate" destination="jwQ-T0-fXX" id="ixm-N4-apG"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="down" id="aCx-TX-0hW">
+                    <connections>
+                        <action selector="swipeDown:" destination="6ep-lC-cev" id="Ish-5w-oN7"/>
+                        <outlet property="delegate" destination="jwQ-T0-fXX" id="swu-p8-cTJ"/>
+                    </connections>
+                </swipeGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="503" y="609"/>
+        </scene>
+    </scenes>
+</document>
