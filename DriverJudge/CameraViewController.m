@@ -164,12 +164,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         
         GPUImageHoughTransformLineDetector *lineDetector = [[GPUImageHoughTransformLineDetector alloc] init];
 #warning CHANGE TO SET THRESHOLD
-        lineDetector.lineDetectionThreshold = 0.3;
+        lineDetector.lineDetectionThreshold = 0.2;
         
          lineDetector.linesDetectedBlock = ^(GLfloat *linesArray, NSUInteger numberOfLines, CMTime timeFrame){
              [self renderLinesFromArray:linesArray count:numberOfLines frameTime:timeFrame];
         };
-        [lineDetector imageByFilteringImage:image];
+        
+        [lineDetector imageByFilteringImage:[UIImage grayImage:image]];
         
         //crop the rect area
         //send it
@@ -214,7 +215,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         //widac ze sa przesuniete o 50-100, jesli obraz jest po srodku rysuje sie dobrze, jesli w lewo to przesuwa w prawo i odwrotnie
         if (slope > 9000.0)
         {
-          
+         //odwrocic znaki na x lub y
            line.start = CGPointMake(intercept,-1.0);
            line.end = CGPointMake(intercept,1.0);
         }
@@ -269,14 +270,22 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     //if its more than 60%, its a plate
     //return the one with most pixels
     for(int i =0; i<[lineArray count]; i++){
-        Line *verticalLine = lineArray[i];
-        if(verticalLine.start.x ==-1 && verticalLine.end.x == 1){
-            [rectangleLines addObject:verticalLine];
-
+        Line *rectangleLine = lineArray[i];
+        if(rectangleLine.start.y ==-1 && rectangleLine.end.y == 1){
+            [rectangleLines addObject:rectangleLine];
+        }
+        float tilt = rectangleLine.start.y - rectangleLine.end.y;
+        if(tilt > -0.1 && tilt < 0.1){
+            [rectangleLines addObject:rectangleLine];
         }
         
+        for(Line *l1 in rectangleLines){
+            for(Line *l2 in rectangleLines){
+                
+            }
+        }
     }
-    return lineArray;
+    return rectangleLines;
 }
 
 
