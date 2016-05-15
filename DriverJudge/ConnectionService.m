@@ -16,7 +16,7 @@
 @end
 @implementation ConnectionService
 
-static NSString * const host = @"192.168.8.3";
+static NSString * const host = @"192.168.8.103";
 static int const port = 4444;
 
 +(ConnectionService*) sharedInstance {
@@ -78,6 +78,7 @@ static int const port = 4444;
                     {
                         NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
                         NSData *theData = [[NSData alloc] initWithBytes:buffer length:len];
+                        
                         if (nil != output)
                         {
                             NSLog(@"NSStreamEventHasBytesAvailable theData: %@", theData);
@@ -127,7 +128,7 @@ static int const port = 4444;
 }
 -(void)uploadPhoto: (UIImage*) image{
     NSData * data = UIImagePNGRepresentation(image);
-    [self stream:inputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
+    [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
 }
 -(void) uploadJudge:(Judgement *)judge {
     NSString *judgeString = [NSString stringWithFormat: @"%@,%@,%hhd,%@", @"JUDGE", judge.plate, judge.isUp, judge.deviceId];
