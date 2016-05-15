@@ -78,7 +78,8 @@
     [self.gestureView addGestureRecognizer:self.swipeDownGesture];
     
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveConnectionStatus:) name:@"ConnectionStatus"object:nil];
+    [getConnectionService() connect];
+    
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -173,9 +174,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         [lineDetector imageByFilteringImage:[UIImage grayImage:image]];
         
         //crop the rect area
+        //crop mock
+        //CGRect cropRect = CGRectMake(100,100,400,400);
+        //CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+        // or use the UIImage wherever you like
+       // UIImage *cropped= [UIImage imageWithCGImage:imageRef];
+       // CGImageRelease(imageRef);
+        
         //send it
         dispatch_async( dispatch_get_main_queue(), ^{
            [self displayLinesFromArray];
+            [getConnectionService() uploadPhoto:image];
             //sending image
         });
         self.fpsCaptureRate = 0;
@@ -215,14 +224,14 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         //widac ze sa przesuniete o 50-100, jesli obraz jest po srodku rysuje sie dobrze, jesli w lewo to przesuwa w prawo i odwrotnie
         if (slope > 9000.0)
         {
-         //odwrocic znaki na x lub y
-           line.start = CGPointMake(intercept,-1.0);
-           line.end = CGPointMake(intercept,1.0);
+         //odwrocic znaki na x lub y, bo wszystko jest rysowane do gory nogami i w lustrzanym odbiciu
+           line.start = CGPointMake(intercept,1.0);
+           line.end = CGPointMake(intercept,-1.0);
         }
         else
         {
-            line.start = CGPointMake(-1, slope * -1.0 + intercept);
-            line.end = CGPointMake(1, slope * 1.0 + intercept);
+            line.start = CGPointMake(1, slope * 1.0 + intercept);
+            line.end = CGPointMake(-1, slope * -1.0 + intercept);
         }
   
         if(![self.linesArray containsObject:line])
@@ -275,17 +284,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             [rectangleLines addObject:rectangleLine];
         }
         float tilt = rectangleLine.start.y - rectangleLine.end.y;
-        if(tilt > -0.1 && tilt < 0.1){
+        if(tilt > -0.2 && tilt < 0.2){
             [rectangleLines addObject:rectangleLine];
         }
         
-        for(Line *l1 in rectangleLines){
-            for(Line *l2 in rectangleLines){
-                
-            }
-        }
+        
     }
-    return rectangleLines;
+    return lineArray;
 }
 
 

@@ -23,6 +23,7 @@
 		28AB327A1C7A56B000BECA63 /* JudgerComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AB32791C7A56B000BECA63 /* JudgerComponent.xib */; };
 		28AB32801C7A5D8800BECA63 /* JudgerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB327F1C7A5D8800BECA63 /* JudgerView.m */; };
 		28C3A4281CDC9CA500273F8F /* Judgement.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C3A4271CDC9CA500273F8F /* Judgement.m */; };
+		28C3A42D1CE5196300273F8F /* libCocoaAsyncSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C3A42C1CE5196300273F8F /* libCocoaAsyncSocket.a */; };
 		28D709161CBED31D008E32A8 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D709151CBED31D008E32A8 /* SimplePing.m */; };
 		28DB3E4B1CCFD6CE004EA9C1 /* Line.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DB3E4A1CCFD6CE004EA9C1 /* Line.m */; };
 		28DC7F081CB0018B003D364E /* libAFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28DC7F071CB0018B003D364E /* libAFNetworking.a */; };
@@ -60,6 +61,7 @@
 		28B3B0331CB437050033B86D /* libTesseractOCRiOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTesseractOCRiOS.a; path = "Pods/../build/Debug-iphoneos/libTesseractOCRiOS.a"; sourceTree = "<group>"; };
 		28C3A4261CDC9CA500273F8F /* Judgement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Judgement.h; sourceTree = "<group>"; };
 		28C3A4271CDC9CA500273F8F /* Judgement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Judgement.m; sourceTree = "<group>"; };
+		28C3A42C1CE5196300273F8F /* libCocoaAsyncSocket.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCocoaAsyncSocket.a; path = "Pods/../build/Debug-iphoneos/libCocoaAsyncSocket.a"; sourceTree = "<group>"; };
 		28D709141CBED31D008E32A8 /* SimplePing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePing.h; sourceTree = "<group>"; };
 		28D709151CBED31D008E32A8 /* SimplePing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
 		28DB3E491CCFD6CE004EA9C1 /* Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Line.h; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28C3A42D1CE5196300273F8F /* libCocoaAsyncSocket.a in Frameworks */,
 				28DC7F081CB0018B003D364E /* libAFNetworking.a in Frameworks */,
 				2834CE9A1C7E7B6F00B02B40 /* libGPUImage.a in Frameworks */,
 				0EF8C50E6720C43E411E8765 /* libPods-DriverJudge.a in Frameworks */,
@@ -195,6 +198,7 @@
 		D2B4D2089FCDE91B4ADEAB0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28C3A42C1CE5196300273F8F /* libCocoaAsyncSocket.a */,
 				28A89D601CB59008004164DD /* libz.tbd */,
 				28A89D5E1CB58FD4004164DD /* libz.1.dylib */,
 				28B3B0331CB437050033B86D /* libTesseractOCRiOS.a */,

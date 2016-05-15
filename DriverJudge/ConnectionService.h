@@ -11,10 +11,15 @@
 #import "LicensePlate.h"
 #import "Judgement.h"
 
-@interface ConnectionService : AFHTTPSessionManager<NSStreamDelegate>
-
-+(int) pingServer;
-
+@interface ConnectionService : NSObject <NSStreamDelegate>{
+    NSInputStream *inputStream;
+    NSOutputStream *outputStream;
+    NSData *dataForStream;
+}
+-(void) uploadPhoto:(UIImage*) photo;
+-(void) uploadJudge:(Judgement*) judge;
+-(int) pingServer;
+-(void) connect;
 @end
 //Global accessor
 #if defined __cplusplus
