@@ -184,7 +184,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         //send it
         dispatch_async( dispatch_get_main_queue(), ^{
            [self displayLinesFromArray];
-            [getConnectionService() uploadPhoto:image];
+            //[getConnectionService() uploadPhoto:image];
             //sending image
         });
         self.fpsCaptureRate = 0;
