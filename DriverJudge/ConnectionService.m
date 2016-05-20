@@ -8,7 +8,7 @@
 
 #import "ConnectionService.h"
 #import "Constants.h"
-
+#import "inttypes.h"
 
 @interface ConnectionService()
 
@@ -16,8 +16,8 @@
 @end
 @implementation ConnectionService
 
-static NSString * const host = @"192.168.8.103";
-static int const port = 4444;
+static NSString * const host = @"192.168.8.101";
+static int const port = 44444;
 
 +(ConnectionService*) sharedInstance {
     static ConnectionService *_sharedService = nil;
@@ -28,9 +28,7 @@ static int const port = 4444;
 
     return _sharedService;
 }
--(void) connect {
-    CFReadStreamRef readStream;
-    CFWriteStreamRef writeStream;
+-(BOOL) connect {
     CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)host, port, &readStream, &writeStream);
     
     inputStream = (__bridge_transfer NSInputStream *)readStream;
@@ -41,10 +39,23 @@ static int const port = 4444;
     [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [inputStream open];
     [outputStream open];
-    
+
     CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
     CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    
+    return YES;
 }
+
+-(void) disconnect {
+    [inputStream close];
+    [outputStream close];
+    
+    CFReadStreamClose(readStream);
+    CFWriteStreamClose(writeStream);
+    
+}
+
+
 -(void) stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent withData: (NSData*) data {
     NSString *io;
     if (theStream == inputStream) io = @">>";
@@ -97,16 +108,32 @@ static int const port = 4444;
             
             if (theStream == outputStream)
             {
-                int num = [outputStream write:[data bytes] maxLength:[data length]];
-                if (-1 == num) {
-                    NSLog(@"Error writing to stream %@: %@", outputStream, [outputStream streamError]);
-                }else{
-                    NSLog(@"Wrote %i bytes to stream %@.", num, outputStream);
-                    //[outputStream close];
-                }
+                NSUInteger length = [data length];
+                // Don't forget to check the return value of 'write'
+                
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^(void) {
+                    
+                    int num = [outputStream write:(uint8_t *)&length maxLength:4];
+                   
+                    NSLog(@"Wrote length %u", length);
+                    
+                    //int num = [outputStream write:[data bytes] maxLength:length];
+                    if (-1 == num) {
+                        NSLog(@"%@", [outputStream streamError]);
+                    
+                        [outputStream close];
+                        [self disconnect];
+                        [self connect];
+                    }else{
+                        NSLog(@"Wrote %i bytes to stream %@.", num, outputStream);
+                         [outputStream close];
+                         [outputStream open];
+                    }
+                });
             }
+                               
             break;
-            
+                            
         case NSStreamEventErrorOccurred:
             event = @"NSStreamEventErrorOccurred";
             NSLog(@"NSStreamEventErrorOccurred - Can not connect to the host");

@@ -16,6 +16,7 @@
 		28684DA01C77E756002B0749 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28684D9E1C77E756002B0749 /* LaunchScreen.storyboard */; };
 		28684DA91C77E7F1002B0749 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DA81C77E7F1002B0749 /* LoginViewController.m */; };
 		28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DAB1C77E80F002B0749 /* CameraViewController.m */; };
+		2869A26E1CEDC300008EF6BD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2869A26D1CEDC300008EF6BD /* CoreFoundation.framework */; };
 		2888F5D31C8C210C003A0429 /* UIImage+Binarization.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D21C8C210C003A0429 /* UIImage+Binarization.m */; };
 		2888F5D71C957A89003A0429 /* ConnectionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D61C957A89003A0429 /* ConnectionService.m */; };
 		2888F5DA1C957AA0003A0429 /* LicensePlate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D91C957AA0003A0429 /* LicensePlate.m */; };
@@ -46,6 +47,7 @@
 		28684DA81C77E7F1002B0749 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		28684DAA1C77E80F002B0749 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
 		28684DAB1C77E80F002B0749 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		2869A26D1CEDC300008EF6BD /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		2888F5D11C8C210C003A0429 /* UIImage+Binarization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Binarization.h"; sourceTree = "<group>"; };
 		2888F5D21C8C210C003A0429 /* UIImage+Binarization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Binarization.m"; sourceTree = "<group>"; };
 		2888F5D51C957A89003A0429 /* ConnectionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionService.h; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2869A26E1CEDC300008EF6BD /* CoreFoundation.framework in Frameworks */,
 				28C3A42D1CE5196300273F8F /* libCocoaAsyncSocket.a in Frameworks */,
 				28DC7F081CB0018B003D364E /* libAFNetworking.a in Frameworks */,
 				2834CE9A1C7E7B6F00B02B40 /* libGPUImage.a in Frameworks */,
@@ -198,6 +201,7 @@
 		D2B4D2089FCDE91B4ADEAB0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2869A26D1CEDC300008EF6BD /* CoreFoundation.framework */,
 				28C3A42C1CE5196300273F8F /* libCocoaAsyncSocket.a */,
 				28A89D601CB59008004164DD /* libz.tbd */,
 				28A89D5E1CB58FD4004164DD /* libz.1.dylib */,
@@ -400,7 +404,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -438,7 +442,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;

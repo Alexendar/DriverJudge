@@ -11,7 +11,6 @@
 @implementation Line
 -(void) rescale:(CGRect)frameScale {
     
-#warning przesunac te punkty o polowe ekranu? najpierw te z slope>900000
 //teraz jest lustrzene odbicie albo przesuniecie
     if(_start.x<=1 && _start.y <=1 && _end.x <=1 && _end.y <=1){
     _start.x =(frameScale.size.width/2)*_start.x +frameScale.size.width/2;
@@ -26,7 +25,7 @@
 {
     CGFloat d = (p2.x - p1.x)*(p4.y - p3.y) - (p2.y - p1.y)*(p4.x - p3.x);
     if (d == 0)
-        return nil; // parallel lines
+        return nil; // rownolegle
     CGFloat u = ((p3.x - p1.x)*(p4.y - p3.y) - (p3.y - p1.y)*(p4.x - p3.x))/d;
     CGFloat v = ((p3.x - p1.x)*(p2.y - p1.y) - (p3.y - p1.y)*(p2.x - p1.x))/d;
     if (u < 0.0 || u > 1.0)

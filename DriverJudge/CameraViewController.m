@@ -77,30 +77,30 @@
     [self.gestureView addGestureRecognizer:self.swipeUpGesture];
     [self.gestureView addGestureRecognizer:self.swipeDownGesture];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveConnectionStatus:)
+                                                 name:@"ConnectionStatus"
+                                               object:nil];
     
-    [getConnectionService() connect];
     
+    BOOL connected = [getConnectionService() connect];
+    if(connected)
+        self.connectionStatusLabel.text = @"Connected";
 }
 
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-   // [self tryToConnect];
-    
-    //Get Preview Layer connection
     AVCaptureConnection *previewLayerConnection=self.previewLayer.connection;
-    
     if ([previewLayerConnection isVideoOrientationSupported])
         [previewLayerConnection setVideoOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 }
-- (IBAction)retryButtonClicked:(id)sender {
-  //  [getConnectionService() reconnect];
-}
+
 - (void) receiveConnectionStatus:(NSNotification *) notification
 {
     if ([[notification name] isEqualToString:@"ConnectionStatus"])
     {
-        self.status.text = @"No connection";
+        self.connectionStatusLabel.text = @"Connection refused";
     }
 }
 
@@ -184,7 +184,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         //send it
         dispatch_async( dispatch_get_main_queue(), ^{
            [self displayLinesFromArray];
-            //[getConnectionService() uploadPhoto:image];
+            [getConnectionService() uploadPhoto:image];
             //sending image
         });
         self.fpsCaptureRate = 0;
@@ -224,7 +224,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         //widac ze sa przesuniete o 50-100, jesli obraz jest po srodku rysuje sie dobrze, jesli w lewo to przesuwa w prawo i odwrotnie
         if (slope > 9000.0)
         {
-         //odwrocic znaki na x lub y, bo wszystko jest rysowane do gory nogami i w lustrzanym odbiciu
            line.start = CGPointMake(intercept,1.0);
            line.end = CGPointMake(intercept,-1.0);
         }

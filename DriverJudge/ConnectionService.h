@@ -15,11 +15,15 @@
     NSInputStream *inputStream;
     NSOutputStream *outputStream;
     NSData *dataForStream;
+    CFReadStreamRef readStream;
+    CFWriteStreamRef writeStream;
+    
+    int timeoutCounter;
 }
 -(void) uploadPhoto:(UIImage*) photo;
 -(void) uploadJudge:(Judgement*) judge;
 -(int) pingServer;
--(void) connect;
+-(BOOL) connect;
 @end
 //Global accessor
 #if defined __cplusplus

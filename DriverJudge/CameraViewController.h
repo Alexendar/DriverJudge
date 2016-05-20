@@ -12,5 +12,6 @@
 {
     GLfloat *lineCoordinates;
 }
+@property (weak, nonatomic) IBOutlet UILabel *connectionStatusLabel;
 
 @end
