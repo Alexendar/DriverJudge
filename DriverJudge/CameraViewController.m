@@ -67,8 +67,21 @@
     self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     self.overviewLayer = [[CALayer alloc] init];
 
-    CGRect videoRect = CGRectMake(0,0,screenWidth,screenHeight);
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     
+    // iOS is going to calculate a size which constrains the 4:3 aspect ratio
+    // to the screen size. We're basically mimicking that here to determine
+    // what size the system will likely display the image at on screen.
+    // NOTE: screenSize.width may seem odd in this calculation - but, remember,
+    // the devices only take 4:3 images when they are oriented *sideways*.
+    float cameraAspectRatio = 4.0 / 3.0;
+    float imageWidth = floorf(screenSize.width * cameraAspectRatio);
+    float scale = ceilf((screenSize.height / imageWidth) * 10.0) / 10.0;
+    
+    self.cameraView.transform = CGAffineTransformMakeScale(1.13, 1.0);
+    
+    CGRect videoRect = CGRectMake(0,0,screenWidth,screenHeight);
+ 
     self.previewLayer.frame = videoRect;
     self.overviewLayer.frame = videoRect;
     
@@ -158,14 +171,55 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     // Create a UIImage from the sample buffer data
     if(self.fpsCaptureRate==[self calculateOptimalCaptureTime] && self.calculatedPreviousFrame){
         //NSLog(@"Capturing frame...");
-        UIImage *image = [self imageFromSampleBuffer:sampleBuffer];
-        UIImage *mock = [UIImage imageNamed:@"mock"];
+        
+        //This image is flipped
+        UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
+        UIImageOrientation  imageOrientation;
+        switch (sourceImage.imageOrientation) {
+            case UIImageOrientationDown:
+                imageOrientation = UIImageOrientationDownMirrored;
+                break;
+                
+            case UIImageOrientationDownMirrored:
+                imageOrientation = UIImageOrientationDown;
+                break;
+                
+            case UIImageOrientationLeft:
+                imageOrientation = UIImageOrientationLeftMirrored;
+                break;
+                
+            case UIImageOrientationLeftMirrored:
+                imageOrientation = UIImageOrientationLeft;
+                
+                break;
+                
+            case UIImageOrientationRight:
+                imageOrientation = UIImageOrientationRightMirrored;
+                
+                break;
+                
+            case UIImageOrientationRightMirrored:
+                imageOrientation = UIImageOrientationRight;
+                
+                break;
+                
+            case UIImageOrientationUp:
+                imageOrientation = UIImageOrientationUpMirrored;
+                break;
+                
+            case UIImageOrientationUpMirrored:
+                imageOrientation = UIImageOrientationUp;
+                break;
+            default:
+                break;
+        }
+
+        UIImage *image = [UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:imageOrientation];
         self.numberOfCapturedFrames++;
-        //NSLog(@"Frame number %d captured",self.numberOfCapturedFrames);
         
         GPUImageHoughTransformLineDetector *lineDetector = [[GPUImageHoughTransformLineDetector alloc] init];
 #warning CHANGE TO SET THRESHOLD
-        lineDetector.lineDetectionThreshold = 0.2;
+        lineDetector.lineDetectionThreshold = 0.3;
         
          lineDetector.linesDetectedBlock = ^(GLfloat *linesArray, NSUInteger numberOfLines, CMTime timeFrame){
              [self renderLinesFromArray:linesArray count:numberOfLines frameTime:timeFrame];
@@ -221,16 +275,16 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         GLfloat intercept = lineSlopeAndIntercepts[currentLineIndex++];
         Line *line = [[Line alloc] init];
         //y = slope* x + intercept, y=mx+b
-        //widac ze sa przesuniete o 50-100, jesli obraz jest po srodku rysuje sie dobrze, jesli w lewo to przesuwa w prawo i odwrotnie
+        //the vertical lines are drawn properly, horizontal - are mirrored
         if (slope > 9000.0)
         {
-           line.start = CGPointMake(intercept,1.0);
-           line.end = CGPointMake(intercept,-1.0);
+           line.start = CGPointMake(intercept,-1.0);
+           line.end = CGPointMake(intercept,1.0);
         }
         else
         {
-            line.start = CGPointMake(1, slope * 1.0 + intercept);
-            line.end = CGPointMake(-1, slope * -1.0 + intercept);
+            line.start = CGPointMake(-1, slope * -1.0 + intercept);
+            line.end = CGPointMake(1, slope * 1.0 + intercept);
         }
   
         if(![self.linesArray containsObject:line])
@@ -262,7 +316,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         [newPath addLineToPoint:line.end];
         [path appendPath:newPath];
     }
-    NSLog(@"END OF LINES");
     return path;
 }
 

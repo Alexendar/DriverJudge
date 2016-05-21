@@ -16,7 +16,7 @@
 @end
 @implementation ConnectionService
 
-static NSString * const host = @"192.168.8.101";
+static NSString * const host = @"192.168.8.103";
 static int const port = 44444;
 
 +(ConnectionService*) sharedInstance {
@@ -113,21 +113,21 @@ static int const port = 44444;
                 
                 dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^(void) {
                     
-                    int num = [outputStream write:(uint8_t *)&length maxLength:4];
+                    //int num = [outputStream write:(uint8_t *)&length maxLength:4];
                    
                     NSLog(@"Wrote length %u", length);
                     
-                    //int num = [outputStream write:[data bytes] maxLength:length];
+                    int num = [outputStream write:[data bytes] maxLength:length];
                     if (-1 == num) {
                         NSLog(@"%@", [outputStream streamError]);
                     
-                        [outputStream close];
                         [self disconnect];
                         [self connect];
+                        
                     }else{
                         NSLog(@"Wrote %i bytes to stream %@.", num, outputStream);
-                         [outputStream close];
-                         [outputStream open];
+                        [self disconnect];
+                        [self connect];
                     }
                 });
             }
@@ -154,7 +154,7 @@ static int const port = 44444;
     NSLog(@"%@ : %@", io, event);
 }
 -(void)uploadPhoto: (UIImage*) image{
-    NSData * data = UIImagePNGRepresentation(image);
+    NSData * data = UIImageJPEGRepresentation(image,0.9);
     [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
 }
 -(void) uploadJudge:(Judgement *)judge {
