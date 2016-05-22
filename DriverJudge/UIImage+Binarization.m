@@ -11,6 +11,8 @@
 
 
 @implementation UIImage(Binarization)
+
+
 + (UIImage *) doBinarize:(UIImage *)sourceImage
 {
     //first off, try to grayscale the image using iOS core Image routine
@@ -43,6 +45,34 @@
     UIGraphicsEndImageContext();
     
     return outputImage;
+}
+
+static CGFloat DegreesToRadians(CGFloat degrees) {return degrees * M_PI / 180;};
+
+
++ (UIImage *)rotateImage:(UIImage*)image byDegree:(CGFloat)degrees
+{
+    UIView *rotatedViewBox = [[UIView alloc] initWithFrame:CGRectMake(0,0,image.size.width, image.size.height)];
+    CGAffineTransform t = CGAffineTransformMakeRotation(DegreesToRadians(degrees));
+    rotatedViewBox.transform = t;
+    CGSize rotatedSize = rotatedViewBox.frame.size;
+    
+    UIGraphicsBeginImageContext(rotatedSize);
+    CGContextRef bitmap = UIGraphicsGetCurrentContext();
+    
+    
+    CGContextTranslateCTM(bitmap, rotatedSize.width, rotatedSize.height);
+    
+    CGContextRotateCTM(bitmap, DegreesToRadians(degrees));
+    
+    
+    CGContextScaleCTM(bitmap, 1.0, -1.0);
+    CGContextDrawImage(bitmap, CGRectMake(-image.size.width, -image.size.height, image.size.width, image.size.height), [image CGImage]);
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+    
 }
 
 @end

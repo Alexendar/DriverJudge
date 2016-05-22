@@ -89,7 +89,8 @@ static int const port = 44444;
                     {
                         NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
                         NSData *theData = [[NSData alloc] initWithBytes:buffer length:len];
-                        
+                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:theData forKey:@"JudgeData"];
+                        [[NSNotificationCenter defaultCenter] postNotificationName: @"JudgeNotification" object:nil userInfo:userInfo];
                         if (nil != output)
                         {
                             NSLog(@"NSStreamEventHasBytesAvailable theData: %@", theData);
@@ -115,7 +116,7 @@ static int const port = 44444;
                     
                     //int num = [outputStream write:(uint8_t *)&length maxLength:4];
                    
-                    NSLog(@"Wrote length %u", length);
+                    NSLog(@"Wrote length %lu", (unsigned long)length);
                     
                     int num = [outputStream write:[data bytes] maxLength:length];
                     if (-1 == num) {

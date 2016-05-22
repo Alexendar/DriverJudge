@@ -9,12 +9,14 @@
 #import "LicensePlate.h"
 
 @implementation LicensePlate
-
--(instancetype) initWithNumber:(NSString*)plateNumbers score:(int) score frame:(CGRect) detectionFrame {
-    self.plateNumbers = plateNumbers;
-    self.score = score;
-    self.detectionFrame = detectionFrame;
-    return self;
+@synthesize score;
+@synthesize plateNumbers;
+@synthesize detectionFrame;
++(LicensePlate*) mapJudgePlate: (NSData*)data{
+    LicensePlate *p = [LicensePlate new];
+    NSString *dataAsString = [[NSString alloc] initWithData:data encoding:kCFStringEncodingUTF8];
+    
+    return p;
 }
 
 

@@ -14,5 +14,5 @@
 @property (nonatomic, strong) NSString* plateNumbers;
 @property int score;
 @property (nonatomic) CGRect detectionFrame;
--(instancetype) initWithNumber:(NSString*)plateNumbers score:(int) score frame:(CGRect) detectionFrame;
++(LicensePlate*) mapJudgePlate: (NSData*)data;
 @end

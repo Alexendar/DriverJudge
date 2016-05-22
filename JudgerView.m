@@ -22,6 +22,20 @@
     scoreLabel.backgroundColor = [UIColor blueColor];
     scoreLabel.text = [[NSString stringWithFormat:@"%d : ", plate.score] stringByAppendingString:plate.plateNumbers];
     
+    UIBezierPath *aPath = [UIBezierPath bezierPath];
+    
+    // Set the starting point of the shape.
+    [aPath moveToPoint:CGPointMake(100.0, 0.0)];
+    
+    // Draw the lines.
+    [aPath addLineToPoint:CGPointMake(200.0, 40.0)];
+    [aPath addLineToPoint:CGPointMake(160, 140)];
+    [aPath addLineToPoint:CGPointMake(40.0, 140)];
+    [aPath addLineToPoint:CGPointMake(0.0, 40.0)];
+    [aPath closePath];
+
+    
+    
     UIImageView *frameView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"blueFrame"]];
     frameView.frame = plate.detectionFrame;
     [self addSubview:scoreLabel];

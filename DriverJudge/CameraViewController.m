@@ -67,18 +67,7 @@
     self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     self.overviewLayer = [[CALayer alloc] init];
 
-    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-    
-    // iOS is going to calculate a size which constrains the 4:3 aspect ratio
-    // to the screen size. We're basically mimicking that here to determine
-    // what size the system will likely display the image at on screen.
-    // NOTE: screenSize.width may seem odd in this calculation - but, remember,
-    // the devices only take 4:3 images when they are oriented *sideways*.
-    float cameraAspectRatio = 4.0 / 3.0;
-    float imageWidth = floorf(screenSize.width * cameraAspectRatio);
-    float scale = ceilf((screenSize.height / imageWidth) * 10.0) / 10.0;
-    
-    self.cameraView.transform = CGAffineTransformMakeScale(1.13, 1.0);
+    self.cameraView.transform = CGAffineTransformMakeScale(1.12, 1.0);
     
     CGRect videoRect = CGRectMake(0,0,screenWidth,screenHeight);
  
@@ -95,6 +84,10 @@
                                                  name:@"ConnectionStatus"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveJudgeNotification:)
+                                                 name:@"JudgeNotification"
+                                               object:nil];
     
     BOOL connected = [getConnectionService() connect];
     if(connected)
@@ -106,7 +99,7 @@
     [super viewDidAppear:YES];
     AVCaptureConnection *previewLayerConnection=self.previewLayer.connection;
     if ([previewLayerConnection isVideoOrientationSupported])
-        [previewLayerConnection setVideoOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+        [previewLayerConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
 }
 
 - (void) receiveConnectionStatus:(NSNotification *) notification
@@ -114,7 +107,16 @@
     if ([[notification name] isEqualToString:@"ConnectionStatus"])
     {
         self.connectionStatusLabel.text = @"Connection refused";
+    } else {
+        self.connectionStatusLabel.text = @"Notification unrecognized";
     }
+}
+
+- (void) receiveJudgeNotification:(NSNotification *) notification{
+    NSDictionary *userInfo = notification.userInfo;
+    NSData *recognizedData = [userInfo objectForKey:@"JudgeData"];
+    LicensePlate *detectedPlate = [LicensePlate mapJudgePlate:recognizedData];
+    [self plateSetup:(LicensePlate*) detectedPlate];
 }
 
 // Create and configure a capture session and start it running
@@ -170,54 +172,14 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
     // Create a UIImage from the sample buffer data
     if(self.fpsCaptureRate==[self calculateOptimalCaptureTime] && self.calculatedPreviousFrame){
-        //NSLog(@"Capturing frame...");
         
-        //This image is flipped
+        //This image is still flipped
         UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
-        UIImageOrientation  imageOrientation;
-        switch (sourceImage.imageOrientation) {
-            case UIImageOrientationDown:
-                imageOrientation = UIImageOrientationDownMirrored;
-                break;
-                
-            case UIImageOrientationDownMirrored:
-                imageOrientation = UIImageOrientationDown;
-                break;
-                
-            case UIImageOrientationLeft:
-                imageOrientation = UIImageOrientationLeftMirrored;
-                break;
-                
-            case UIImageOrientationLeftMirrored:
-                imageOrientation = UIImageOrientationLeft;
-                
-                break;
-                
-            case UIImageOrientationRight:
-                imageOrientation = UIImageOrientationRightMirrored;
-                
-                break;
-                
-            case UIImageOrientationRightMirrored:
-                imageOrientation = UIImageOrientationRight;
-                
-                break;
-                
-            case UIImageOrientationUp:
-                imageOrientation = UIImageOrientationUpMirrored;
-                break;
-                
-            case UIImageOrientationUpMirrored:
-                imageOrientation = UIImageOrientationUp;
-                break;
-            default:
-                break;
-        }
-
-        UIImage *image = [UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:imageOrientation];
+        UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationUpMirrored];
         self.numberOfCapturedFrames++;
         
         GPUImageHoughTransformLineDetector *lineDetector = [[GPUImageHoughTransformLineDetector alloc] init];
+
 #warning CHANGE TO SET THRESHOLD
         lineDetector.lineDetectionThreshold = 0.3;
         
@@ -239,7 +201,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         dispatch_async( dispatch_get_main_queue(), ^{
            [self displayLinesFromArray];
             [getConnectionService() uploadPhoto:image];
-            //sending image
         });
         self.fpsCaptureRate = 0;
      
@@ -293,7 +254,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 -(void) displayLinesFromArray {
-    
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     shapeLayer.strokeColor = [[UIColor redColor] CGColor];
     shapeLayer.lineWidth = 1.0;
@@ -319,7 +279,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     return path;
 }
 
-#warning PROBLEM
 -(NSArray*) detectRectangles: (NSMutableArray*) lineArray {
     NSMutableArray* rectangleLines = [NSMutableArray new];
     //how to find all rectangles in line array
@@ -348,16 +307,14 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 
 -(void) plateSetup:(LicensePlate*) detectedPlate {
-#warning MOCK
-    LicensePlate *mockPlate = [[LicensePlate alloc] initWithNumber:@"S2 YBKI" score:0 frame:CGRectMake(80+arc4random_uniform(45),80+arc4random_uniform(45),180,50)];
-        [self.judgerFrameView removeFromSuperview];
-        
-        if(detectedPlate)
-            self.judgerFrameView = [[JudgerView alloc] initWithLicensePlate: detectedPlate];
-        else
-            self.judgerFrameView = [[JudgerView alloc] initWithLicensePlate: mockPlate];
-        
+    [self.judgerFrameView removeFromSuperview];
+    if(detectedPlate){
+        self.judgerFrameView = [[JudgerView alloc] initWithLicensePlate: detectedPlate];
         [self.judgerView addSubview:self.judgerFrameView];
+    } else {
+        self.judgerFrameView = [[JudgerView alloc] init];
+        [self.judgerView addSubview:self.judgerFrameView];
+    }
 }
 
 -(int) calculateOptimalCaptureTime {
@@ -411,6 +368,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSLog(@"setting session...");
     _session=session;
 }
+
+
 
 - (IBAction)swipeDown:(id)sender {
      CGPoint point = [sender locationInView:self.view];

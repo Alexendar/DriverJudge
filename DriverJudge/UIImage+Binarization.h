@@ -11,4 +11,5 @@
 @interface UIImage(Binarization)
 + (UIImage *) doBinarize:(UIImage *)sourceImage;
 + (UIImage *) grayImage :(UIImage *)inputImage;
++ (UIImage *)rotateImage:(UIImage*)image byDegree:(CGFloat)degrees;
 @end
