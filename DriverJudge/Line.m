@@ -21,7 +21,7 @@
     }
 }
 
-- (NSValue *)intersectionOfLineFrom:(CGPoint)p1 to:(CGPoint)p2 withLineFrom:(CGPoint)p3 to:(CGPoint)p4
++ (NSValue *)intersectionOfLineFrom:(CGPoint)p1 to:(CGPoint)p2 withLineFrom:(CGPoint)p3 to:(CGPoint)p4
 {
     CGFloat d = (p2.x - p1.x)*(p4.y - p3.y) - (p2.y - p1.y)*(p4.x - p3.x);
     if (d == 0)
@@ -37,6 +37,15 @@
     intersection.y = p1.y + u * (p2.y - p1.y);
     
     return [NSValue valueWithCGPoint:intersection];
+}
+
++ (BOOL) isIntersecting: (Line*) l1 withLine: (Line*) l2{
+    NSValue *res = [Line intersectionOfLineFrom:l1.start to:l1.end withLineFrom:l2.start to:l2.end];
+    if(res){
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 @end
