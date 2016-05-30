@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C66682AACA8A39D4B776A414'
+               BlueprintIdentifier = 'DB1EF7C1FAE257960423A5A6'
                BlueprintName = 'Pods-DriverJudge'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libPods-DriverJudge.a'>

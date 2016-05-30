@@ -5,7 +5,7 @@
 //  Created by Aleksander on 13/03/16.
 //  Copyright © 2016 Aleksander. All rights reserved.
 //
-#import "GCDAsyncSocket.h"
+
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 #import "LicensePlate.h"

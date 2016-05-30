@@ -7,7 +7,6 @@
 //
 #import "CameraViewController.h"
 #import "GPUImage.h"
-#import "UIImage+Binarization.h"
 #import "ConnectionService.h"
 #import "JudgerView.h"
 #import "LicensePlate.h"
@@ -15,7 +14,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import "Constants.h"
 #import "Line.h"
-
+#import "CVSquaresWrapper.h"
+#import "UIImage+fixOrientation.h"
 @interface CameraViewController () <AVCaptureVideoDataOutputSampleBufferDelegate,UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *cameraView;
@@ -35,6 +35,8 @@
 @property (strong,nonatomic) JudgerView *judgerFrameView;
 
 @property (strong,nonatomic) NSMutableArray *linesArray;
+@property (strong,nonatomic) NSMutableArray *verticalLineArray;
+@property (strong,nonatomic) NSMutableArray *horizontalLineArray;
 
 @property (strong,nonatomic) NSMutableArray *intersectedLines;
 
@@ -49,6 +51,8 @@
 @property int fpsCaptureRate;
 @property int numberOfCapturedFrames;
 @property BOOL calculatedPreviousFrame;
+
+@property (strong,nonatomic) UIImage* catchedImage;
 
 @end
 
@@ -66,8 +70,6 @@
     CGFloat screenHeight = screenRect.size.height;
     self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     self.overviewLayer = [[CALayer alloc] init];
-    
-    self.cameraView.transform = CGAffineTransformMakeScale(1.12, 1.0);
     
     CGRect videoRect = CGRectMake(0,0,screenWidth,screenHeight);
     
@@ -130,7 +132,7 @@
     // Configure the session to produce lower resolution video frames, if your
     // processing algorithm can cope. We'll specify medium quality for the
     // chosen device.
-    session.sessionPreset = AVCaptureSessionPreset640x480;
+    session.sessionPreset = AVCaptureSessionPresetMedium;
     
     // Find a suitable AVCaptureDevice
     AVCaptureDevice *device = [AVCaptureDevice
@@ -175,34 +177,21 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         
         //This image is still flipped
         UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
-        UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationDown];
+        UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationUpMirrored];
+
         self.numberOfCapturedFrames++;
         
-        GPUImageHoughTransformLineDetector *lineDetector = [[GPUImageHoughTransformLineDetector alloc] init];
-        
-#warning CHANGE TO SET THRESHOLD
-        lineDetector.lineDetectionThreshold = 0.2;
-        lineDetector.edgeThreshold = 0.9;
-        
-        lineDetector.linesDetectedBlock = ^(GLfloat *linesArray, NSUInteger numberOfLines, CMTime timeFrame){
-            [self renderLinesFromArray:linesArray count:numberOfLines frameTime:timeFrame];
-            NSLog(@"Number of lines %lu", (unsigned long)numberOfLines);
+        CVSquaresWrapper *wrap = [[CVSquaresWrapper alloc] init];
+        wrap.rectanglesDetectedBlock = ^(NSArray* pointsArray) {
+            [self renderRectangles:pointsArray];
         };
         
-        [lineDetector imageByFilteringImage:[UIImage grayImage:image]];
+        [wrap squaresInImage:image tolerance:0.01 threshold:50 levels:11];
         
-        //crop the rect area
-        //crop mock
-        //CGRect cropRect = CGRectMake(100,100,400,400);
-        //CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
-        // or use the UIImage wherever you like
-        // UIImage *cropped= [UIImage imageWithCGImage:imageRef];
-        // CGImageRelease(imageRef);
-        
-        //send it
+
         dispatch_async( dispatch_get_main_queue(), ^{
             [self displayLinesFromArray];
-            [getConnectionService() uploadPhoto:image];
+            //[getConnectionService() uploadPhoto:image];
         });
         self.fpsCaptureRate = 0;
         
@@ -215,66 +204,34 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     lineCoordinates = calloc(1024 * 4, sizeof(GLfloat));
 }
 
-- (void)renderLinesFromArray:(GLfloat *)lineSlopeAndIntercepts count:(NSUInteger)numberOfLines frameTime:(CMTime)frameTime;
-{
-    self.linesArray = [[NSMutableArray alloc] init];
-    self.calculatedPreviousFrame = NO;
-    
-    if (lineCoordinates == NULL)
-    {
-        [self generateLineCoordinates];
-    }
-    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    self.overviewLayer = [[CALayer alloc] init];
-    shapeLayer.strokeColor = [UIColor blueColor].CGColor;
-    shapeLayer.lineWidth = 1.0;
-    
-    NSUInteger currentLineIndex = 0;
-    NSUInteger maxLineIndex = numberOfLines *2;
-    while(currentLineIndex < maxLineIndex)
-    {
-        GLfloat slope = lineSlopeAndIntercepts[currentLineIndex++];
-        GLfloat intercept = lineSlopeAndIntercepts[currentLineIndex++];
-        Line *line = [[Line alloc] init];
-        line.slope = slope;
-        line.intercept = intercept;
-        if (slope > 9000.0)
-        {
-            line.start = CGPointMake(intercept,-1.0);
-            line.end = CGPointMake(intercept,1.0);
-        }
-        else
-        {
-            line.start = CGPointMake(-1, slope * -1.0 + intercept);
-            line.end = CGPointMake(1, slope * 1.0 + intercept);
-        }
-        BOOL orientationTestPassed = NO;
-        BOOL similarityTestPassed = YES;
-        if(![self.linesArray containsObject:line]){
-            float tilt = line.start.y - line.end.y;
-            if(line.start.y ==-1 && line.end.y == 1){
-                orientationTestPassed = YES;
-                for(Line *l in self.linesArray){
-                    //check if there is a similar line
-                    if([[NSString stringWithFormat:@"%.2f", l.intercept] floatValue] == [[NSString stringWithFormat:@"%.2f", line.intercept] floatValue]){
-                        similarityTestPassed = NO;
-                        break;
-                    }
-                }
+-(void) renderRectangles:(NSArray*) pointsArray{
+    self.linesArray = [NSMutableArray new];
+    //podzielic na cztery
+    if([pointsArray count]%4==0){
+        for(int i = 0; i< [pointsArray count]; i+=4){
+            Line *top = [Line new];
+            Line *left = [Line new];
+            Line *bot = [Line new];
+            Line *right = [Line new];
+            top.start = [[pointsArray objectAtIndex:i] CGPointValue];
+            top.end = [[pointsArray objectAtIndex:i+1] CGPointValue];
+            left.start = [[pointsArray objectAtIndex:i+1] CGPointValue];
+            left.end = [[pointsArray objectAtIndex:i+2]CGPointValue];
+            bot.start = [[pointsArray objectAtIndex:i+2] CGPointValue];
+            bot.end = [[pointsArray objectAtIndex:i+3] CGPointValue];
+            right.start = [[pointsArray objectAtIndex:i+3]CGPointValue];
+            right.end = [[pointsArray objectAtIndex:i] CGPointValue];
+            BOOL allInScreen = NO;
+            if(CGRectContainsPoint(self.cameraView.frame, top.start) && CGRectContainsPoint(self.cameraView.frame, top.end)&& CGRectContainsPoint(self.cameraView.frame, left.start) && CGRectContainsPoint(self.cameraView.frame, left.end) && CGRectContainsPoint(self.cameraView.frame, bot.start) && CGRectContainsPoint(self.cameraView.frame, bot.end) && CGRectContainsPoint(self.cameraView.frame, right.start) && CGRectContainsPoint(self.cameraView.frame, right.end)){
+                allInScreen = YES;
             }
-            else if(tilt > -0.2 && tilt < 0.2){
-                orientationTestPassed = YES;
-                for(Line *l in self.linesArray){
-                    //check if there is a similar line, slopes should be checked too
-                    if([[NSString stringWithFormat:@"%.2f", l.intercept] floatValue] == [[NSString stringWithFormat:@"%.2f", line.intercept] floatValue]){
-                        similarityTestPassed = NO;
-                        break;
-                    }
-                }
+                
+            if(allInScreen){
+                [self.linesArray addObject:top];
+                [self.linesArray addObject:left];
+                [self.linesArray addObject:bot];
+                [self.linesArray addObject:right];
             }
-            
-            if(orientationTestPassed && similarityTestPassed)
-                [self.linesArray addObject:line];
         }
     }
 }
@@ -296,8 +253,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 -(UIBezierPath*) setupLinesPath: (UIBezierPath*) path {
     NSArray *detectedLines = [self detectRectangles:[self.linesArray copy]];
+    NSLog(@"Number of drawn lines %lu", (unsigned long)[detectedLines count]);
     for(Line *line in detectedLines){
-        [line rescale:self.view.frame];
         UIBezierPath *newPath = [UIBezierPath new];
         [newPath moveToPoint:line.start];
         [newPath addLineToPoint:line.end];
@@ -307,6 +264,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 -(NSArray*) detectRectangles: (NSMutableArray*) lineArray {
+  
+    NSLog(@"We got %lu lines", (unsigned long)[lineArray count]);
     
     NSMutableArray *rectanglePoints = [NSMutableArray new];
     for(Line *l in lineArray){
@@ -318,17 +277,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             }
         }
     }
-    
-    NSMutableArray *rectangleLines = [NSMutableArray new];
-    
-    for(int i = 0; i < [rectanglePoints count]; i++){
-        Line *rectLine = [Line new];
-        if(i%2==0)
-            rectLine.start = [rectanglePoints[i] CGPointValue];
-        else
-            rectLine.end = [rectanglePoints[i] CGPointValue];
-        [rectangleLines addObject:rectLine];
-    }
+
+  
     return lineArray;
 }
 
@@ -397,6 +347,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSLog(@"setting session...");
     _session=session;
 }
+
+
 
 
 

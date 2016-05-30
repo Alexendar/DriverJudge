@@ -13,10 +13,10 @@
     
 //teraz jest lustrzene odbicie albo przesuniecie
     if(_start.x<=1 && _start.y <=1 && _end.x <=1 && _end.y <=1){
-    _start.x =(frameScale.size.width/2)*_start.x +frameScale.size.width/2;
-    _start.y =(frameScale.size.height/2)*_start.y +frameScale.size.height/2;
-    _end.x =(frameScale.size.width/2)*_end.x + frameScale.size.width/2;
-    _end.y =(frameScale.size.height/2)*_end.y + frameScale.size.height/2;
+    _start.x =(int)ceil((frameScale.size.width/2)*_start.x +frameScale.size.width/2);
+    _start.y =(int)ceil((frameScale.size.height/2)*_start.y +frameScale.size.height/2);
+    _end.x =(int)ceil((frameScale.size.width/2)*_end.x + frameScale.size.width/2);
+    _end.y =(int)ceil((frameScale.size.height/2)*_end.y + frameScale.size.height/2);
     NSLog(@"od %f,%f do %f,%f", _start.x, _start.y, _end.x, _end.y );
     }
 }
@@ -38,6 +38,7 @@
     
     return [NSValue valueWithCGPoint:intersection];
 }
+
 
 + (BOOL) isIntersecting: (Line*) l1 withLine: (Line*) l2{
     NSValue *res = [Line intersectionOfLineFrom:l1.start to:l1.end withLineFrom:l2.start to:l2.end];

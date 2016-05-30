@@ -17,6 +17,13 @@
 		28684DA91C77E7F1002B0749 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DA81C77E7F1002B0749 /* LoginViewController.m */; };
 		28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28684DAB1C77E80F002B0749 /* CameraViewController.m */; };
 		2869A26E1CEDC300008EF6BD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2869A26D1CEDC300008EF6BD /* CoreFoundation.framework */; };
+		28782F831CFC354900976FB7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28782F821CFC354900976FB7 /* opencv2.framework */; };
+		28782F851CFC36E400976FB7 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28782F841CFC36E400976FB7 /* AssetsLibrary.framework */; };
+		28782F8A1CFC3DAD00976FB7 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 28782F891CFC3DAD00976FB7 /* libc++.tbd */; };
+		28782F8D1CFC3E9D00976FB7 /* CVSquaresWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28782F8C1CFC3E9D00976FB7 /* CVSquaresWrapper.mm */; };
+		28782F901CFC40B700976FB7 /* CVSquares.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28782F8E1CFC40B700976FB7 /* CVSquares.cpp */; };
+		28782F951CFC4D2200976FB7 /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28782F941CFC4D2200976FB7 /* UIImage+OpenCV.mm */; };
+		28786FCD1CFC6532007A2802 /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28786FCC1CFC6532007A2802 /* UIImage+fixOrientation.m */; };
 		2888F5D31C8C210C003A0429 /* UIImage+Binarization.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D21C8C210C003A0429 /* UIImage+Binarization.m */; };
 		2888F5D71C957A89003A0429 /* ConnectionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D61C957A89003A0429 /* ConnectionService.m */; };
 		2888F5DA1C957AA0003A0429 /* LicensePlate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D91C957AA0003A0429 /* LicensePlate.m */; };
@@ -48,6 +55,17 @@
 		28684DAA1C77E80F002B0749 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
 		28684DAB1C77E80F002B0749 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		2869A26D1CEDC300008EF6BD /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		28782F821CFC354900976FB7 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = Pods/OpenCV/opencv2.framework; sourceTree = "<group>"; };
+		28782F841CFC36E400976FB7 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		28782F891CFC3DAD00976FB7 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		28782F8B1CFC3E9D00976FB7 /* CVSquaresWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVSquaresWrapper.h; sourceTree = "<group>"; };
+		28782F8C1CFC3E9D00976FB7 /* CVSquaresWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CVSquaresWrapper.mm; sourceTree = "<group>"; };
+		28782F8E1CFC40B700976FB7 /* CVSquares.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVSquares.cpp; sourceTree = "<group>"; };
+		28782F8F1CFC40B700976FB7 /* CVSquares.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVSquares.h; sourceTree = "<group>"; };
+		28782F911CFC426900976FB7 /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
+		28782F941CFC4D2200976FB7 /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
+		28786FCB1CFC6532007A2802 /* UIImage+fixOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+fixOrientation.h"; sourceTree = "<group>"; };
+		28786FCC1CFC6532007A2802 /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+fixOrientation.m"; sourceTree = "<group>"; };
 		2888F5D11C8C210C003A0429 /* UIImage+Binarization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Binarization.h"; sourceTree = "<group>"; };
 		2888F5D21C8C210C003A0429 /* UIImage+Binarization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Binarization.m"; sourceTree = "<group>"; };
 		2888F5D51C957A89003A0429 /* ConnectionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionService.h; sourceTree = "<group>"; };
@@ -77,6 +95,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28782F8A1CFC3DAD00976FB7 /* libc++.tbd in Frameworks */,
+				28782F851CFC36E400976FB7 /* AssetsLibrary.framework in Frameworks */,
+				28782F831CFC354900976FB7 /* opencv2.framework in Frameworks */,
 				2869A26E1CEDC300008EF6BD /* CoreFoundation.framework in Frameworks */,
 				28C3A42D1CE5196300273F8F /* libCocoaAsyncSocket.a in Frameworks */,
 				28DC7F081CB0018B003D364E /* libAFNetworking.a in Frameworks */,
@@ -93,6 +114,10 @@
 			children = (
 				2888F5D11C8C210C003A0429 /* UIImage+Binarization.h */,
 				2888F5D21C8C210C003A0429 /* UIImage+Binarization.m */,
+				28782F911CFC426900976FB7 /* UIImage+OpenCV.h */,
+				28782F941CFC4D2200976FB7 /* UIImage+OpenCV.mm */,
+				28786FCB1CFC6532007A2802 /* UIImage+fixOrientation.h */,
+				28786FCC1CFC6532007A2802 /* UIImage+fixOrientation.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -165,6 +190,10 @@
 				28DB3E4A1CCFD6CE004EA9C1 /* Line.m */,
 				28C3A4261CDC9CA500273F8F /* Judgement.h */,
 				28C3A4271CDC9CA500273F8F /* Judgement.m */,
+				28782F8B1CFC3E9D00976FB7 /* CVSquaresWrapper.h */,
+				28782F8C1CFC3E9D00976FB7 /* CVSquaresWrapper.mm */,
+				28782F8F1CFC40B700976FB7 /* CVSquares.h */,
+				28782F8E1CFC40B700976FB7 /* CVSquares.cpp */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -201,6 +230,9 @@
 		D2B4D2089FCDE91B4ADEAB0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28782F891CFC3DAD00976FB7 /* libc++.tbd */,
+				28782F841CFC36E400976FB7 /* AssetsLibrary.framework */,
+				28782F821CFC354900976FB7 /* opencv2.framework */,
 				2869A26D1CEDC300008EF6BD /* CoreFoundation.framework */,
 				28C3A42C1CE5196300273F8F /* libCocoaAsyncSocket.a */,
 				28A89D601CB59008004164DD /* libz.tbd */,
@@ -339,9 +371,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28782F901CFC40B700976FB7 /* CVSquares.cpp in Sources */,
+				28782F951CFC4D2200976FB7 /* UIImage+OpenCV.mm in Sources */,
+				28786FCD1CFC6532007A2802 /* UIImage+fixOrientation.m in Sources */,
 				28DB3E4B1CCFD6CE004EA9C1 /* Line.m in Sources */,
 				28298A471CBAA8690013ED7B /* Constants.m in Sources */,
 				28684D921C77E756002B0749 /* main.m in Sources */,
+				28782F8D1CFC3E9D00976FB7 /* CVSquaresWrapper.mm in Sources */,
 				2888F5D71C957A89003A0429 /* ConnectionService.m in Sources */,
 				28D709161CBED31D008E32A8 /* SimplePing.m in Sources */,
 				28C3A4281CDC9CA500273F8F /* Judgement.m in Sources */,
@@ -373,7 +409,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -388,6 +424,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -398,6 +435,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -407,6 +445,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lstdc++";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "arm64 armv7s armv7";
 			};
@@ -417,7 +456,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -432,10 +471,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -445,6 +486,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-lstdc++";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "arm64 armv7s armv7";
@@ -458,8 +500,14 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++98";
 				CLANG_CXX_LIBRARY = "libstdc++";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods/OpenCV",
+				);
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "DriverJudge/Framework/*/**";
 				INFOPLIST_FILE = DriverJudge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -471,6 +519,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-fobjc-arc",
+					"-lstdc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = aleksander.DriverJudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -486,8 +535,14 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++98";
 				CLANG_CXX_LIBRARY = "libstdc++";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods/OpenCV",
+				);
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "DriverJudge/Framework/*/**";
 				INFOPLIST_FILE = DriverJudge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -499,6 +554,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-fobjc-arc",
+					"-lstdc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = aleksander.DriverJudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";

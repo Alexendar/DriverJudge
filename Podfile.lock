@@ -20,23 +20,17 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - CocoaAsyncSocket (7.4.3):
-    - CocoaAsyncSocket/All (= 7.4.3)
-  - CocoaAsyncSocket/All (7.4.3):
-    - CocoaAsyncSocket/GCD
-    - CocoaAsyncSocket/RunLoop
-  - CocoaAsyncSocket/GCD (7.4.3)
-  - CocoaAsyncSocket/RunLoop (7.4.3)
   - GPUImage (0.1.7)
+  - OpenCV (3.0.0)
 
 DEPENDENCIES:
   - AFNetworking
-  - CocoaAsyncSocket
   - GPUImage (~> 0.1.7)
+  - OpenCV (~> 3.0)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  CocoaAsyncSocket: a18c75dca4b08723628a0bacca6e94803d90be91
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
+  OpenCV: be07c02f0d8f125f1d40d261e66a66cb66ece3b3
 
 COCOAPODS: 0.39.0
