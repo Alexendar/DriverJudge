@@ -23,7 +23,6 @@
 		28782F8D1CFC3E9D00976FB7 /* CVSquaresWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28782F8C1CFC3E9D00976FB7 /* CVSquaresWrapper.mm */; };
 		28782F901CFC40B700976FB7 /* CVSquares.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28782F8E1CFC40B700976FB7 /* CVSquares.cpp */; };
 		28782F951CFC4D2200976FB7 /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28782F941CFC4D2200976FB7 /* UIImage+OpenCV.mm */; };
-		28786FCD1CFC6532007A2802 /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28786FCC1CFC6532007A2802 /* UIImage+fixOrientation.m */; };
 		2888F5D31C8C210C003A0429 /* UIImage+Binarization.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D21C8C210C003A0429 /* UIImage+Binarization.m */; };
 		2888F5D71C957A89003A0429 /* ConnectionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D61C957A89003A0429 /* ConnectionService.m */; };
 		2888F5DA1C957AA0003A0429 /* LicensePlate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D91C957AA0003A0429 /* LicensePlate.m */; };
@@ -64,8 +63,6 @@
 		28782F8F1CFC40B700976FB7 /* CVSquares.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVSquares.h; sourceTree = "<group>"; };
 		28782F911CFC426900976FB7 /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
 		28782F941CFC4D2200976FB7 /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
-		28786FCB1CFC6532007A2802 /* UIImage+fixOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+fixOrientation.h"; sourceTree = "<group>"; };
-		28786FCC1CFC6532007A2802 /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+fixOrientation.m"; sourceTree = "<group>"; };
 		2888F5D11C8C210C003A0429 /* UIImage+Binarization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Binarization.h"; sourceTree = "<group>"; };
 		2888F5D21C8C210C003A0429 /* UIImage+Binarization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Binarization.m"; sourceTree = "<group>"; };
 		2888F5D51C957A89003A0429 /* ConnectionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionService.h; sourceTree = "<group>"; };
@@ -116,8 +113,6 @@
 				2888F5D21C8C210C003A0429 /* UIImage+Binarization.m */,
 				28782F911CFC426900976FB7 /* UIImage+OpenCV.h */,
 				28782F941CFC4D2200976FB7 /* UIImage+OpenCV.mm */,
-				28786FCB1CFC6532007A2802 /* UIImage+fixOrientation.h */,
-				28786FCC1CFC6532007A2802 /* UIImage+fixOrientation.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -373,7 +368,6 @@
 			files = (
 				28782F901CFC40B700976FB7 /* CVSquares.cpp in Sources */,
 				28782F951CFC4D2200976FB7 /* UIImage+OpenCV.mm in Sources */,
-				28786FCD1CFC6532007A2802 /* UIImage+fixOrientation.m in Sources */,
 				28DB3E4B1CCFD6CE004EA9C1 /* Line.m in Sources */,
 				28298A471CBAA8690013ED7B /* Constants.m in Sources */,
 				28684D921C77E756002B0749 /* main.m in Sources */,

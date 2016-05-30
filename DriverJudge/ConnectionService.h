@@ -20,7 +20,7 @@
     
     int timeoutCounter;
 }
--(void) uploadPhoto:(UIImage*) photo;
+-(void)uploadPhoto: (UIImage*) image cropped:(CGRect)cropRect;
 -(void) uploadJudge:(Judgement*) judge;
 -(int) pingServer;
 -(BOOL) connect;

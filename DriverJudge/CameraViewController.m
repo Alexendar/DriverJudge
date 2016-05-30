@@ -15,7 +15,8 @@
 #import "Constants.h"
 #import "Line.h"
 #import "CVSquaresWrapper.h"
-#import "UIImage+fixOrientation.h"
+#import "UIImage+Binarization.h"
+
 @interface CameraViewController () <AVCaptureVideoDataOutputSampleBufferDelegate,UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *cameraView;
@@ -35,10 +36,7 @@
 @property (strong,nonatomic) JudgerView *judgerFrameView;
 
 @property (strong,nonatomic) NSMutableArray *linesArray;
-@property (strong,nonatomic) NSMutableArray *verticalLineArray;
-@property (strong,nonatomic) NSMutableArray *horizontalLineArray;
-
-@property (strong,nonatomic) NSMutableArray *intersectedLines;
+@property (strong,nonatomic) NSMutableArray *rectangleArray;
 
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeDownGesture;
 - (IBAction)swipeDown:(id)sender;
@@ -47,12 +45,12 @@
 
 - (IBAction)swipeUp:(id)sender;
 
-@property GLfloat* slopeAndIntercepts;
 @property int fpsCaptureRate;
-@property int numberOfCapturedFrames;
+@property (strong,nonatomic) UIImage * calculatedImage;
 @property BOOL calculatedPreviousFrame;
+@property int numberOfCapturedFrames;
 
-@property (strong,nonatomic) UIImage* catchedImage;
+@property CGRect cropRectangle;
 
 @end
 
@@ -60,7 +58,7 @@
 
 
 -(void)viewDidLoad {
-    
+    self.calculatedImage = [UIImage new];
     self.calculatedPreviousFrame = YES;
     self.numberOfCapturedFrames = 0;
     self.fpsCaptureRate = 0;
@@ -175,23 +173,24 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     // Create a UIImage from the sample buffer data
     if(self.fpsCaptureRate==[self calculateOptimalCaptureTime] && self.calculatedPreviousFrame){
         
-        //This image is still flipped
         UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
-        UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationUpMirrored];
-
+        UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationUp];
+        
+        self.calculatedImage = image;
         self.numberOfCapturedFrames++;
         
         CVSquaresWrapper *wrap = [[CVSquaresWrapper alloc] init];
         wrap.rectanglesDetectedBlock = ^(NSArray* pointsArray) {
             [self renderRectangles:pointsArray];
         };
+   
+        [wrap squaresInImage:image tolerance:0.01 threshold:70 levels:3];
         
-        [wrap squaresInImage:image tolerance:0.01 threshold:50 levels:11];
-        
-
         dispatch_async( dispatch_get_main_queue(), ^{
-            [self displayLinesFromArray];
-            //[getConnectionService() uploadPhoto:image];
+            if(self.linesArray){
+                [self displayLinesFromArray];
+                [getConnectionService() uploadPhoto:image cropped:self.cropRectangle];
+            }
         });
         self.fpsCaptureRate = 0;
         
@@ -199,47 +198,103 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         self.fpsCaptureRate++;
     }
 }
-- (void)generateLineCoordinates;
-{
-    lineCoordinates = calloc(1024 * 4, sizeof(GLfloat));
-}
 
 -(void) renderRectangles:(NSArray*) pointsArray{
     self.linesArray = [NSMutableArray new];
+    self.rectangleArray = [NSMutableArray new];
+ 
     //podzielic na cztery
     if([pointsArray count]%4==0){
         for(int i = 0; i< [pointsArray count]; i+=4){
+            //points are detected randomly. those top,left,right names mean nothing
             Line *top = [Line new];
             Line *left = [Line new];
             Line *bot = [Line new];
             Line *right = [Line new];
+            
             top.start = [[pointsArray objectAtIndex:i] CGPointValue];
             top.end = [[pointsArray objectAtIndex:i+1] CGPointValue];
-            left.start = [[pointsArray objectAtIndex:i+1] CGPointValue];
-            left.end = [[pointsArray objectAtIndex:i+2]CGPointValue];
+
+            right.start = [[pointsArray objectAtIndex:i+1] CGPointValue];
+            right.end = [[pointsArray objectAtIndex:i+2]CGPointValue];
+            
             bot.start = [[pointsArray objectAtIndex:i+2] CGPointValue];
             bot.end = [[pointsArray objectAtIndex:i+3] CGPointValue];
-            right.start = [[pointsArray objectAtIndex:i+3]CGPointValue];
-            right.end = [[pointsArray objectAtIndex:i] CGPointValue];
+            
+            left.start = [[pointsArray objectAtIndex:i+3]CGPointValue];
+            left.end = [[pointsArray objectAtIndex:i] CGPointValue];
             BOOL allInScreen = NO;
             if(CGRectContainsPoint(self.cameraView.frame, top.start) && CGRectContainsPoint(self.cameraView.frame, top.end)&& CGRectContainsPoint(self.cameraView.frame, left.start) && CGRectContainsPoint(self.cameraView.frame, left.end) && CGRectContainsPoint(self.cameraView.frame, bot.start) && CGRectContainsPoint(self.cameraView.frame, bot.end) && CGRectContainsPoint(self.cameraView.frame, right.start) && CGRectContainsPoint(self.cameraView.frame, right.end)){
                 allInScreen = YES;
             }
                 
             if(allInScreen){
-                [self.linesArray addObject:top];
-                [self.linesArray addObject:left];
-                [self.linesArray addObject:bot];
-                [self.linesArray addObject:right];
+                NSMutableArray *rectangle = [NSMutableArray new];
+                
+                
+                [rectangle addObject:top];
+                [rectangle addObject:left];
+                [rectangle addObject:bot];
+                [rectangle addObject:right];
+                int smallestX =self.cameraView.frame.size.width;
+                int biggestX =0;
+                int smallestY = self.cameraView.frame.size.height;
+                int biggestY =0;
+                for(Line *l in rectangle){
+                    if(l.start.x < smallestX)
+                        smallestX = l.start.x;
+                    
+                    if(l.start.x>biggestX)
+                        biggestX = l.start.x;
+                    
+                    if(l.start.y < smallestY)
+                        smallestY = l.start.y;
+                    if(l.start.y > biggestY)
+                        biggestY = l.start.y;
+                    
+                }
+                NSLog(@"%d %d %d %d", smallestX,smallestY,biggestX,biggestY);
+                int checkRatio = (biggestX-smallestX)/(biggestY-smallestY);
+                int diff = kPerfectPlateRatio - checkRatio;
+                
+                if(diff <2 && diff > -2){
+                    Line *topLine = [Line new];
+                    Line *botLine = [Line new];
+                    Line *leftLine = [Line new];
+                    Line *rightLine = [Line new];
+                    
+                    CGPoint middle = CGPointMake(self.cameraView.frame.size.width/2, self.cameraView.frame.size.height/2);
+                        //rotate every point around middle?
+                    
+                    topLine.start = CGPointMake(smallestX, smallestY);
+                    
+                    topLine.end = CGPointMake(biggestX,smallestY);
+                    
+                    botLine.start = CGPointMake(smallestX, biggestY);
+                    botLine.end = CGPointMake(biggestX, biggestY);
+                    
+                    leftLine.start = topLine.start;
+                    leftLine.end = botLine.start;
+                    
+                    rightLine.start = topLine.end;
+                    rightLine.end = botLine.end;
+                    
+                    [self.linesArray addObject:topLine];
+                    [self.linesArray addObject:botLine];
+                    [self.linesArray addObject:rightLine];
+                    [self.linesArray addObject:leftLine];
+                    
+                    self.cropRectangle = CGRectMake(topLine.start.x,topLine.start.y, botLine.end.x, botLine.end.y);
+                    break;
+                }
             }
         }
     }
 }
 
-
 -(void) displayLinesFromArray {
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.strokeColor = [[UIColor redColor] CGColor];
+    shapeLayer.strokeColor = [[UIColor blueColor] CGColor];
     shapeLayer.lineWidth = 1.0;
     UIBezierPath *path = [UIBezierPath bezierPath];
     shapeLayer.path = [[self setupLinesPath:path] CGPath];
@@ -252,9 +307,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 -(UIBezierPath*) setupLinesPath: (UIBezierPath*) path {
-    NSArray *detectedLines = [self detectRectangles:[self.linesArray copy]];
-    NSLog(@"Number of drawn lines %lu", (unsigned long)[detectedLines count]);
-    for(Line *line in detectedLines){
+    NSLog(@"Number of drawn lines %lu", (unsigned long)[self.linesArray count]);
+    for(Line *line in self.linesArray){
         UIBezierPath *newPath = [UIBezierPath new];
         [newPath moveToPoint:line.start];
         [newPath addLineToPoint:line.end];
@@ -262,28 +316,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
     return path;
 }
-
--(NSArray*) detectRectangles: (NSMutableArray*) lineArray {
-  
-    NSLog(@"We got %lu lines", (unsigned long)[lineArray count]);
-    
-    NSMutableArray *rectanglePoints = [NSMutableArray new];
-    for(Line *l in lineArray){
-        for(Line *k in lineArray){
-            if(![l isEqual:k]){
-                NSValue *intersectionPoint = [Line intersectionOfLineFrom:l.start to:l.end withLineFrom:k.start to:k.end];
-                if(intersectionPoint)
-                    [rectanglePoints addObject:intersectionPoint];
-            }
-        }
-    }
-
-  
-    return lineArray;
-}
-
-
-
 
 -(void) plateSetup:(LicensePlate*) detectedPlate {
     [self.judgerFrameView removeFromSuperview];
@@ -300,7 +332,24 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     //  int pingTime = [getConnectionService() pingServer];
     return 30;
 }
-
+-(CGPoint) rotateAroundPointX: (float) cx andY: (float) cy angle:(float) angle pointOrigin: (CGPoint) p
+{
+    float s = sin(angle);
+    float c = cos(angle);
+    
+    // translate point back to origin:
+    p.x -= cx;
+    p.y -= cy;
+    
+    // rotate point
+    float xnew = p.x * c - p.y * s;
+    float ynew = p.x * s + p.y * c;
+    
+    // translate point back:
+    p.x = xnew + cx;
+    p.y = ynew + cy;
+    return p;
+}
 
 // Create a UIImage from sample buffer data
 - (UIImage *) imageFromSampleBuffer:(CMSampleBufferRef) sampleBuffer

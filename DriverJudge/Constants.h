@@ -11,5 +11,7 @@
 @interface Constants : NSObject
 
 extern NSString * const kPlateRecognizerServer;
-
+extern int const kPlateWidth;
+extern int const kPlateHeight;
+extern int const kPerfectPlateRatio;
 @end

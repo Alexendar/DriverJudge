@@ -77,6 +77,7 @@
                             <constraint firstItem="jJw-tl-1eW" firstAttribute="trailing" secondItem="qGL-Qm-Vxi" secondAttribute="trailing" id="tqf-n5-QYV"/>
                         </constraints>
                     </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="cameraView" destination="jJw-tl-1eW" id="TYE-Ef-c9S"/>
                         <outlet property="connectionStatusLabel" destination="o4K-9m-chW" id="Fcg-ax-SGL"/>

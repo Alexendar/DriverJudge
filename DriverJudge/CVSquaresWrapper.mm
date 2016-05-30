@@ -51,6 +51,7 @@ threshold:(NSInteger)threshold
     
     //convert from UIImage to cv::Mat openCV image format
     //this is a category on UIImage
+    
     cv::Mat matImage = [UIImage CVMat:image];
     
     NSMutableArray *rectResults = [[NSMutableArray alloc] init];

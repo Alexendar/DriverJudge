@@ -156,9 +156,18 @@ static int const port = 44444;
     
     NSLog(@"%@ : %@", io, event);
 }
--(void)uploadPhoto: (UIImage*) image{
-    NSData * data = UIImageJPEGRepresentation(image,0.9);
-    [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
+-(void)uploadPhoto: (UIImage*) image cropped:(CGRect)cropRect{
+    if(cropRect.size.width>0){
+        CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+        UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
+        croppedImage = [UIImage imageWithCGImage:croppedImage.CGImage scale:croppedImage.scale orientation:UIImageOrientationDown];
+      //  UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil);
+        CGImageRelease(imageRef);
+        
+        //nie dziala za dobrze to wycinanie, wycina zupelnie inna czesc obrazu
+        NSData * data = UIImageJPEGRepresentation(image,0.9);
+        [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
+    }
 }
 -(void) uploadJudge:(Judgement *)judge {
     NSString *judgeString = [NSString stringWithFormat: @"%@,%@,%hhd,%@", @"JUDGE", judge.plate, judge.isUp, judge.deviceId];

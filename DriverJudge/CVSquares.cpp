@@ -153,11 +153,3 @@ static void findSquares( const Mat& image, vector<vector<Point> >& squares )
         }
     }
 }
-
-
-
-// the rest of this file is identical to the original squares.cpp except:
-// main{} is removed
-// this line is removed from drawSquares:
-// imshow(wndname, image);
-// (obj-c will do the drawing)

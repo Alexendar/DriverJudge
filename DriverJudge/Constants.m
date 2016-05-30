@@ -11,5 +11,7 @@
 @implementation Constants
 
 NSString * const kPlateRecognizerServer = @"192.168.0.2:4444";
-
+int const kPlateWidth = 520;
+int const kPlateHeight = 114;
+int const kPerfectPlateRatio = 4;
 @end
