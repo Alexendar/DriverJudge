@@ -108,12 +108,10 @@ static int const port = 44444;
             if (theStream == outputStream)
             {
                 NSUInteger length = [data length];
-                // Don't forget to check the return value of 'write'
-                
+              
                 dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^(void) {
                     
-                    //int num = [outputStream write:(uint8_t *)&length maxLength:4];
-                   
+                    
                     NSLog(@"Length %lu", (unsigned long)length);
                     //buffor limit
                     if(length > 130000)
@@ -157,11 +155,9 @@ static int const port = 44444;
         CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
         UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
         croppedImage = [UIImage imageWithCGImage:croppedImage.CGImage scale:croppedImage.scale orientation:UIImageOrientationDown];
-      //  UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil);
         CGImageRelease(imageRef);
-        
-        //nie dziala za dobrze to wycinanie, wycina zupelnie inna czesc obrazu
-        NSData * data = UIImageJPEGRepresentation(image,0.9);
+        UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil,  nil);
+        NSData * data = UIImageJPEGRepresentation(croppedImage,0.9);
         [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
     }
 }

@@ -50,21 +50,15 @@ threshold:(NSInteger)threshold
                              levels:(NSInteger)levels {
     
     
-    //Konwertowanie obraca do gory nogami
-    
-    //ten jest dobrze
-    //UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-    
-    cv::Mat matImage;
-    UIImageToMat(image, matImage,false);
-    image = MatToUIImage(matImage);
-    
-    //ten jest odwrotnie
-    //UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-    
+    cv::Mat matImage = [UIImage CVMat:image];
+
     NSMutableArray *rectResults = [[NSMutableArray alloc] init];
     
-    std::vector<std::vector<cv::Point> > points = CVSquares::squaresInImage(matImage, tolerance, threshold, levels);
+    cv::Mat rotatedImage;
+    
+    rotate(matImage,180,rotatedImage);
+    
+    std::vector<std::vector<cv::Point> > points = CVSquares::squaresInImage(rotatedImage, tolerance, threshold, levels);
     
     for(int i = 0; i < points.size(); i++){
         for(int j = 0; j < points.at(i).size(); j++){
@@ -79,7 +73,13 @@ threshold:(NSInteger)threshold
             rectanglesDetectedBlock(rectResults);
     }
     return rectResults;
-
+}
+void rotate(cv::Mat& src, double angle, cv::Mat& dst)
+{
+    cv::Point2f pt(src.cols/2., src.rows/2.);
+    cv::Mat r = cv::getRotationMatrix2D(pt, angle, 1.0);
+    
+    cv::warpAffine(src, dst, r, src.size());
 }
 
 @end

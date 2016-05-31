@@ -135,7 +135,7 @@
     // Configure the session to produce lower resolution video frames, if your
     // processing algorithm can cope. We'll specify medium quality for the
     // chosen device.
-    session.sessionPreset = AVCaptureSessionPresetMedium;
+    session.sessionPreset = AVCaptureSessionPreset640x480;
     
     // Find a suitable AVCaptureDevice
     AVCaptureDevice *device = [AVCaptureDevice
@@ -177,7 +177,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
     // Create a UIImage from the sample buffer data
     if(self.fpsCaptureRate==[self calculateOptimalCaptureTime] && self.calculatedPreviousFrame){
-        
         UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
         UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationDown];
         
@@ -187,14 +186,14 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         CVSquaresWrapper *wrap = [[CVSquaresWrapper alloc] init];
         wrap.rectanglesDetectedBlock = ^(NSArray* pointsArray) {
             [self renderRectangles:pointsArray];
+
         };
-        [wrap squaresInImage:image tolerance:0.01 threshold:70 levels:3];
-        
+        [wrap squaresInImage:image tolerance:0.01 threshold:50 levels:11];
         
         dispatch_async( dispatch_get_main_queue(), ^{
             [self displayLinesFromArray];
             if([self.linesArray count]>0){
-                [getConnectionService() uploadPhoto:image cropped:self.cropRectangle];
+               [getConnectionService() uploadPhoto:image cropped:self.cropRectangle];
             }
         });
         self.fpsCaptureRate = 0;
@@ -209,7 +208,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     self.rectangleArray = [NSMutableArray new];
  
     //podzielic na cztery
-    if([pointsArray count]%4==0){
+    if([pointsArray count]%4==0 && [pointsArray count]>=4){
         for(int i = 0; i< [pointsArray count]; i+=4){
             //points are detected randomly. those top,left,right names mean nothing
             Line *top = [Line new];
@@ -217,17 +216,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             Line *bot = [Line new];
             Line *right = [Line new];
             
-            top.start = [[pointsArray objectAtIndex:i] CGPointValue];
-            top.end = [[pointsArray objectAtIndex:i+1] CGPointValue];
+            top.start = [self scalePoint:[[pointsArray objectAtIndex:i] CGPointValue]];
+            top.end = [self scalePoint:[[pointsArray objectAtIndex:i+1] CGPointValue]];
 
-            right.start = [[pointsArray objectAtIndex:i+1] CGPointValue];
-            right.end = [[pointsArray objectAtIndex:i+2]CGPointValue];
+            right.start = [self scalePoint:[[pointsArray objectAtIndex:i+1] CGPointValue]];
+            right.end = [self scalePoint:[[pointsArray objectAtIndex:i+2]CGPointValue]];
             
-            bot.start = [[pointsArray objectAtIndex:i+2] CGPointValue];
-            bot.end = [[pointsArray objectAtIndex:i+3] CGPointValue];
+            bot.start = [self scalePoint:[[pointsArray objectAtIndex:i+2] CGPointValue]];
+            bot.end = [self scalePoint:[[pointsArray objectAtIndex:i+3] CGPointValue]];
             
-            left.start = [[pointsArray objectAtIndex:i+3]CGPointValue];
-            left.end = [[pointsArray objectAtIndex:i] CGPointValue];
+            left.start = [self scalePoint:[[pointsArray objectAtIndex:i+3]CGPointValue]];
+            left.end = [self scalePoint:[[pointsArray objectAtIndex:i] CGPointValue]];
             BOOL allInScreen = NO;
             if(CGRectContainsPoint(self.cameraView.frame, top.start) && CGRectContainsPoint(self.cameraView.frame, top.end)&& CGRectContainsPoint(self.cameraView.frame, left.start) && CGRectContainsPoint(self.cameraView.frame, left.end) && CGRectContainsPoint(self.cameraView.frame, bot.start) && CGRectContainsPoint(self.cameraView.frame, bot.end) && CGRectContainsPoint(self.cameraView.frame, right.start) && CGRectContainsPoint(self.cameraView.frame, right.end)){
                 allInScreen = YES;
@@ -262,15 +261,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                 int checkRatio = (biggestX-smallestX)/(biggestY-smallestY);
                 int diff = kPerfectPlateRatio - checkRatio;
                 
-                if(diff <2 && diff > -2){
+                if(diff <3 && diff > -3){
                     Line *topLine = [Line new];
                     Line *botLine = [Line new];
                     Line *leftLine = [Line new];
                     Line *rightLine = [Line new];
                     
-                    CGPoint middle = CGPointMake(self.cameraView.frame.size.width/2, self.cameraView.frame.size.height/2);
-                        //rotate every point around middle?
-                    
+                   
                     topLine.start = CGPointMake(smallestX, smallestY);
                     
                     topLine.end = CGPointMake(biggestX,smallestY);
@@ -284,17 +281,31 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                     rightLine.start = topLine.end;
                     rightLine.end = botLine.end;
                     
+                    
+                    self.cropRectangle = CGRectMake(topLine.start.x,topLine.start.y, botLine.end.x, botLine.end.y);
                     [self.linesArray addObject:topLine];
                     [self.linesArray addObject:botLine];
                     [self.linesArray addObject:rightLine];
                     [self.linesArray addObject:leftLine];
-                    
-                    self.cropRectangle = CGRectMake(topLine.start.x,topLine.start.y, botLine.end.x, botLine.end.y);
-                    break;
+                     break;
                 }
             }
         }
     }
+}
+
+-(CGPoint) scalePoint:(CGPoint) point {
+    float imageSizeX = self.calculatedImage.size.width;
+    float imageSizeY = self.calculatedImage.size.height;
+    float screenSizeX = self.cameraView.frame.size.width;
+    float screenSizeY = self.cameraView.frame.size.height;
+    
+    float scaleX = screenSizeX/imageSizeX;
+    float scaleY = screenSizeY/imageSizeY;
+    
+    point.x*=scaleX;
+    point.y*=scaleY;
+    return point;
 }
 
 -(void) displayLinesFromArray {
@@ -337,24 +348,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 -(int) calculateOptimalCaptureTime {
     //  int pingTime = [getConnectionService() pingServer];
     return 30;
-}
--(CGPoint) rotateAroundPointX: (float) cx andY: (float) cy angle:(float) angle pointOrigin: (CGPoint) p
-{
-    float s = sin(angle);
-    float c = cos(angle);
-    
-    // translate point back to origin:
-    p.x -= cx;
-    p.y -= cy;
-    
-    // rotate point
-    float xnew = p.x * c - p.y * s;
-    float ynew = p.x * s + p.y * c;
-    
-    // translate point back:
-    p.x = xnew + cx;
-    p.y = ynew + cy;
-    return p;
 }
 
 // Create a UIImage from sample buffer data
@@ -402,8 +395,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSLog(@"setting session...");
     _session=session;
 }
-
-
 
 
 
