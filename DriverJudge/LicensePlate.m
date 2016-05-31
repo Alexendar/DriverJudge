@@ -15,7 +15,8 @@
 +(LicensePlate*) mapJudgePlate: (NSData*)data{
     LicensePlate *p = [LicensePlate new];
     NSString *dataAsString = [[NSString alloc] initWithData:data encoding:kCFStringEncodingUTF8];
-    
+    p.plateNumbers = dataAsString;
+    p.score = 0;
     return p;
 }
 

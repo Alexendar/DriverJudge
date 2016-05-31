@@ -10,7 +10,7 @@
 
 //  CVSquaresWrapper.mm
 //  wrapper that talks to c++ and to obj-c classes
-
+#import "opencv2/imgcodecs/ios.h"
 #import "CVSquaresWrapper.h"
 #import "CVSquares.h"
 #import "UIImage+OpenCV.h"
@@ -49,15 +49,21 @@ tolerance:(CGFloat)tolerance
 threshold:(NSInteger)threshold
                              levels:(NSInteger)levels {
     
-    //convert from UIImage to cv::Mat openCV image format
-    //this is a category on UIImage
     
-    cv::Mat matImage = [UIImage CVMat:image];
+    //Konwertowanie obraca do gory nogami
+    
+    //ten jest dobrze
+    //UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+    
+    cv::Mat matImage;
+    UIImageToMat(image, matImage,false);
+    image = MatToUIImage(matImage);
+    
+    //ten jest odwrotnie
+    //UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
     
     NSMutableArray *rectResults = [[NSMutableArray alloc] init];
-    //call the c++ class static member function
-    //we want this function signature to exactly
-    //mirror the form of the calling method
+    
     std::vector<std::vector<cv::Point> > points = CVSquares::squaresInImage(matImage, tolerance, threshold, levels);
     
     for(int i = 0; i < points.size(); i++){

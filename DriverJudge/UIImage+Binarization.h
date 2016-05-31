@@ -13,4 +13,5 @@
 + (UIImage *) grayImage :(UIImage *)inputImage;
 + (UIImage *)rotateImage:(UIImage*)image byDegree:(CGFloat)degrees;
 - (UIColor *)colorAtPosition:(CGPoint)position;
+- (UIImage*) fixOrientation;
 @end

@@ -8,6 +8,7 @@
 
 #import "UIImage+OpenCV.h"
 
+
 @implementation UIImage (UIImage_OpenCV)
 
 +(UIImage *)imageFromCVMat:(cv::Mat)cvMat {
@@ -59,7 +60,11 @@
     CGFloat rows = image.size.height;
     
     cv::Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels
-    
+    if  (image.imageOrientation == UIImageOrientationLeft
+         || image.imageOrientation == UIImageOrientationRight) {
+        cols = image.size.height;
+        rows = image.size.width;
+    }
     CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to backing data
                                                     cols,                       // Width of bitmap
                                                     rows,                       // Height of bitmap

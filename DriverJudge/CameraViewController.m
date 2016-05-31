@@ -18,7 +18,7 @@
 #import "UIImage+Binarization.h"
 
 @interface CameraViewController () <AVCaptureVideoDataOutputSampleBufferDelegate,UIGestureRecognizerDelegate>
-
+@property (strong,nonatomic) UILabel * plateLabel;
 @property (strong, nonatomic) IBOutlet UIView *cameraView;
 @property (strong, nonatomic) IBOutlet UIView *judgerView;
 @property (strong, nonatomic) IBOutlet UIView *gestureView;
@@ -49,6 +49,8 @@
 @property (strong,nonatomic) UIImage * calculatedImage;
 @property BOOL calculatedPreviousFrame;
 @property int numberOfCapturedFrames;
+
+@property (strong,nonatomic) NSString *reconPlate;
 
 @property CGRect cropRectangle;
 
@@ -89,13 +91,14 @@
                                                  name:@"JudgeNotification"
                                                object:nil];
     
-    BOOL connected = [getConnectionService() connect];
-    if(connected)
-        self.connectionStatusLabel.text = @"Connected";
-}
+    }
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    BOOL connected = [getConnectionService() connect];
+    if(connected)
+        self.connectionStatusLabel.text = @"Connected";
+
     [super viewDidAppear:YES];
     AVCaptureConnection *previewLayerConnection=self.previewLayer.connection;
     if ([previewLayerConnection isVideoOrientationSupported])
@@ -116,7 +119,9 @@
     NSDictionary *userInfo = notification.userInfo;
     NSData *recognizedData = [userInfo objectForKey:@"JudgeData"];
     LicensePlate *detectedPlate = [LicensePlate mapJudgePlate:recognizedData];
-    [self plateSetup:(LicensePlate*) detectedPlate];
+    
+    self.reconPlate = detectedPlate.plateNumbers;
+    
 }
 
 // Create and configure a capture session and start it running
@@ -174,7 +179,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     if(self.fpsCaptureRate==[self calculateOptimalCaptureTime] && self.calculatedPreviousFrame){
         
         UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
-        UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationUp];
+        UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationDown];
         
         self.calculatedImage = image;
         self.numberOfCapturedFrames++;
@@ -183,12 +188,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         wrap.rectanglesDetectedBlock = ^(NSArray* pointsArray) {
             [self renderRectangles:pointsArray];
         };
-   
         [wrap squaresInImage:image tolerance:0.01 threshold:70 levels:3];
         
+        
         dispatch_async( dispatch_get_main_queue(), ^{
-            if(self.linesArray){
-                [self displayLinesFromArray];
+            [self displayLinesFromArray];
+            if([self.linesArray count]>0){
                 [getConnectionService() uploadPhoto:image cropped:self.cropRectangle];
             }
         });
@@ -253,7 +258,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                         biggestY = l.start.y;
                     
                 }
-                NSLog(@"%d %d %d %d", smallestX,smallestY,biggestX,biggestY);
+                
                 int checkRatio = (biggestX-smallestX)/(biggestY-smallestY);
                 int diff = kPerfectPlateRatio - checkRatio;
                 
@@ -294,8 +299,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 -(void) displayLinesFromArray {
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.strokeColor = [[UIColor blueColor] CGColor];
-    shapeLayer.lineWidth = 1.0;
+    shapeLayer.strokeColor = [[UIColor yellowColor] CGColor];
+    shapeLayer.lineWidth = 3.0;
     UIBezierPath *path = [UIBezierPath bezierPath];
     shapeLayer.path = [[self setupLinesPath:path] CGPath];
     
@@ -307,26 +312,27 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 -(UIBezierPath*) setupLinesPath: (UIBezierPath*) path {
-    NSLog(@"Number of drawn lines %lu", (unsigned long)[self.linesArray count]);
-    for(Line *line in self.linesArray){
-        UIBezierPath *newPath = [UIBezierPath new];
-        [newPath moveToPoint:line.start];
-        [newPath addLineToPoint:line.end];
-        [path appendPath:newPath];
+    [self.plateLabel removeFromSuperview];
+    if([self.linesArray count] >0){
+        if(self.reconPlate){
+            Line *top = [self.linesArray objectAtIndex:0];
+            self.plateLabel = [[UILabel alloc ] init];
+            self.plateLabel.frame = CGRectMake(top.start.x, top.start.y-30, top.end.y, 40);
+            self.plateLabel.text = self.reconPlate;
+            self.plateLabel.textColor = [UIColor yellowColor];
+            [self.cameraView addSubview:self.plateLabel];
+            self.reconPlate = @"";
+        }
+        for(Line *line in self.linesArray){
+            UIBezierPath *newPath = [UIBezierPath new];
+            [newPath moveToPoint:line.start];
+            [newPath addLineToPoint:line.end];
+            [path appendPath:newPath];
+        }
     }
     return path;
 }
 
--(void) plateSetup:(LicensePlate*) detectedPlate {
-    [self.judgerFrameView removeFromSuperview];
-    if(detectedPlate){
-        self.judgerFrameView = [[JudgerView alloc] initWithLicensePlate: detectedPlate];
-        [self.judgerView addSubview:self.judgerFrameView];
-    } else {
-        self.judgerFrameView = [[JudgerView alloc] init];
-        [self.judgerView addSubview:self.judgerFrameView];
-    }
-}
 
 -(int) calculateOptimalCaptureTime {
     //  int pingTime = [getConnectionService() pingServer];

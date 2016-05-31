@@ -20,6 +20,7 @@
     
     UILabel *scoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(plate.detectionFrame.origin.x, plate.detectionFrame.origin.y -30, plate.detectionFrame.size.width, 30)];
     scoreLabel.backgroundColor = [UIColor blueColor];
+    plate.score = 0;
     scoreLabel.text = [[NSString stringWithFormat:@"%d : ", plate.score] stringByAppendingString:plate.plateNumbers];
     
     UIBezierPath *aPath = [UIBezierPath bezierPath];

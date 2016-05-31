@@ -12,11 +12,10 @@
 
 @interface ConnectionService()
 
-
 @end
 @implementation ConnectionService
 
-static NSString * const host = @"192.168.8.103";
+static NSString * const host = @"192.168.8.104";
 static int const port = 44444;
 
 +(ConnectionService*) sharedInstance {
@@ -24,6 +23,7 @@ static int const port = 44444;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedService = [[ConnectionService alloc] init];
+        
     });
 
     return _sharedService;
@@ -51,8 +51,6 @@ static int const port = 44444;
     CFWriteStreamClose(writeStream);
     [inputStream close];
     [outputStream close];
-    
-
 }
 
 
@@ -87,13 +85,14 @@ static int const port = 44444;
                     len = [inputStream read:buffer maxLength:sizeof(buffer)];
                     if (len > 0)
                     {
-                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
+                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSUTF8StringEncoding];
                         NSData *theData = [[NSData alloc] initWithBytes:buffer length:len];
-                        //NSDictionary *userInfo = [NSDictionary dictionaryWithObject:theData forKey:@"JudgeData"];
-                       // [[NSNotificationCenter defaultCenter] postNotificationName: @"JudgeNotification" object:nil userInfo:userInfo];
+                       
                         if (nil != output)
                         {
                             NSString* newStr = [[NSString alloc] initWithData:theData encoding:NSUTF8StringEncoding];
+                            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:theData forKey:@"JudgeData"];
+                            [[NSNotificationCenter defaultCenter] postNotificationName: @"JudgeNotification" object:nil userInfo:userInfo];
                             NSLog(@"NSStreamEventHasBytesAvailable theData: %@", newStr);
                         }
                     }
@@ -115,20 +114,17 @@ static int const port = 44444;
                     
                     //int num = [outputStream write:(uint8_t *)&length maxLength:4];
                    
-                    NSLog(@"Wrote length %lu", (unsigned long)length);
+                    NSLog(@"Length %lu", (unsigned long)length);
                     //buffor limit
                     if(length > 130000)
                         return;
                     
                     int num = [outputStream write:[data bytes] maxLength:length];
                     if (-1 == num) {
-                        NSLog(@"%@", [outputStream streamError]);
-                        
-                    }else{
-                           [self stream:inputStream handleEvent:NSStreamEventHasBytesAvailable withData:nil];
+                        NSLog(@"Error %@", [outputStream streamError]);
+                    } else {
+                        [self stream:inputStream handleEvent:NSStreamEventHasBytesAvailable withData:nil];
                         NSLog(@"Wrote %i bytes to stream %@.", num, outputStream);
-                        
-                       
                     }
                     [self disconnect];
                     [self connect];
