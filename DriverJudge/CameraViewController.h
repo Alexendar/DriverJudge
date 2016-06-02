@@ -9,9 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CameraViewController :  UIViewController <UINavigationControllerDelegate>
-{
-    GLfloat *lineCoordinates;
-}
 @property (weak, nonatomic) IBOutlet UILabel *connectionStatusLabel;
-
 @end

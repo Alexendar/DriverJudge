@@ -5,37 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
-        <!--Login View Controller-->
-        <scene sceneID="eT6-J7-4Bg">
-            <objects>
-                <viewController id="YH5-VR-rOZ" customClass="LoginViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Rq9-aK-LwD"/>
-                        <viewControllerLayoutGuide type="bottom" id="3LH-wC-YDy"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="742-2m-pBj">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nDD-qJ-w2p">
-                                <rect key="frame" x="277" y="285" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <segue destination="6ep-lC-cev" kind="show" id="b5j-XE-uyj"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="nDD-qJ-w2p" firstAttribute="centerY" secondItem="742-2m-pBj" secondAttribute="centerY" id="IGD-BO-42Z"/>
-                            <constraint firstItem="nDD-qJ-w2p" firstAttribute="centerX" secondItem="742-2m-pBj" secondAttribute="centerX" id="et7-Py-W2J"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qbY-zo-nSe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="517" y="-141"/>
-        </scene>
         <!--Camera View Controller-->
         <scene sceneID="VD0-GR-nNv">
             <objects>

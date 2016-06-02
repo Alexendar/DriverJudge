@@ -16,13 +16,10 @@ using namespace cv;
 
 static int thresh = 50, N = 11;
 static float tolerance = 0.01;
-//declarations added so that we can move our
-//public function to the top of the file
+
 static void findSquares(  const Mat& image,   vector<vector<Point> >& squares );
 
 
-//this public function performs the role of
-//main{} in the original file (main{} is deleted)
 cv::Mat CVSquares::detectedSquaresInImage (cv::Mat image, float tol, int threshold, int levels)
 {
     vector<vector<Point> > squares;
@@ -57,8 +54,6 @@ vector<vector<Point> > CVSquares::squaresInImage(cv::Mat image, float tol, int t
     return squares;
 
 }
-
-
 
 // helper function:
 // finds a cosine of angle between vectors

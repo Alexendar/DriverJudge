@@ -18,16 +18,19 @@
 #import "UIImage+Binarization.h"
 
 @interface CameraViewController () <AVCaptureVideoDataOutputSampleBufferDelegate,UIGestureRecognizerDelegate>
+
 @property (strong,nonatomic) UILabel * plateLabel;
 @property (strong, nonatomic) IBOutlet UIView *cameraView;
 @property (strong, nonatomic) IBOutlet UIView *judgerView;
 @property (strong, nonatomic) IBOutlet UIView *gestureView;
+@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeDownGesture;
+@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeUpGesture;
+- (IBAction)swipeDown:(id)sender;
+- (IBAction)swipeUp:(id)sender;
 
-@property (weak, nonatomic) IBOutlet UILabel *status;
 
 
 @property (strong,nonatomic) AVCaptureSession *session;
-
 @property (strong,nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
 @property (strong,nonatomic) CALayer *overviewLayer;
 
@@ -38,12 +41,6 @@
 @property (strong,nonatomic) NSMutableArray *linesArray;
 @property (strong,nonatomic) NSMutableArray *rectangleArray;
 
-@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeDownGesture;
-- (IBAction)swipeDown:(id)sender;
-
-@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeUpGesture;
-
-- (IBAction)swipeUp:(id)sender;
 
 @property int fpsCaptureRate;
 @property (strong,nonatomic) UIImage * calculatedImage;
@@ -51,8 +48,9 @@
 @property int numberOfCapturedFrames;
 
 @property (strong,nonatomic) NSString *reconPlate;
-
 @property CGRect cropRectangle;
+@property (strong,nonatomic) UIColor *reconColor;
+@property (strong, nonatomic) Judgement *judge;
 
 @end
 
@@ -60,6 +58,7 @@
 
 
 -(void)viewDidLoad {
+    self.reconColor = [UIColor yellowColor];
     self.calculatedImage = [UIImage new];
     self.calculatedPreviousFrame = YES;
     self.numberOfCapturedFrames = 0;
@@ -119,9 +118,13 @@
     NSDictionary *userInfo = notification.userInfo;
     NSData *recognizedData = [userInfo objectForKey:@"JudgeData"];
     LicensePlate *detectedPlate = [LicensePlate mapJudgePlate:recognizedData];
-    
-    self.reconPlate = detectedPlate.plateNumbers;
-    
+    self.judge.plate = detectedPlate;
+    self.reconPlate = [NSString stringWithFormat:@"%@, score:%d" ,detectedPlate.plateNumbers,detectedPlate.score ];
+    if(detectedPlate.score>0){
+        self.reconColor = [UIColor greenColor];
+    } else if(detectedPlate <0){
+        self.reconColor = [UIColor redColor];
+    }
 }
 
 // Create and configure a capture session and start it running
@@ -281,12 +284,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                     rightLine.start = topLine.end;
                     rightLine.end = botLine.end;
                     
+                    //rectangle has addded safety space +20
+                    self.cropRectangle = CGRectMake(topLine.start.x-20,topLine.start.y-20, botLine.end.x+20, botLine.end.y+20);
                     
-                    self.cropRectangle = CGRectMake(topLine.start.x,topLine.start.y, botLine.end.x, botLine.end.y);
-                    [self.linesArray addObject:topLine];
-                    [self.linesArray addObject:botLine];
-                    [self.linesArray addObject:rightLine];
-                    [self.linesArray addObject:leftLine];
+                    [self.linesArray addObject:top];
+                    [self.linesArray addObject:bot];
+                    [self.linesArray addObject:right];
+                    [self.linesArray addObject:left];
                      break;
                 }
             }
@@ -310,7 +314,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 -(void) displayLinesFromArray {
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.strokeColor = [[UIColor yellowColor] CGColor];
+    shapeLayer.strokeColor = [self.reconColor CGColor];
     shapeLayer.lineWidth = 3.0;
     UIBezierPath *path = [UIBezierPath bezierPath];
     shapeLayer.path = [[self setupLinesPath:path] CGPath];
@@ -396,19 +400,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     _session=session;
 }
 
-
-
 - (IBAction)swipeDown:(id)sender {
-    CGPoint point = [sender locationInView:self.view];
-    if(CGRectContainsPoint(self.judgerFrameView.frame, point) && self.recievedLicensePlate){
-        //judge
-    }
+
+    self.judge.isUp = NO;
+    [getConnectionService() uploadJudge:nil];
+    self.reconColor = [UIColor orangeColor];
 }
 - (IBAction)swipeUp:(id)sender {
-    CGPoint point = [sender locationInView:self.view];
-    if(CGRectContainsPoint(self.judgerFrameView.frame, point) && self.recievedLicensePlate){
-        //judge
-    }
+
+    self.judge.isUp = YES;
+     [getConnectionService() uploadJudge:nil];
+    self.reconColor = [UIColor colorWithRed:0 green:255 blue:100 alpha:1];
 }
 
 
