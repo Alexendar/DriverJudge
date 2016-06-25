@@ -156,11 +156,16 @@ static int const port = 44444;
         UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
         croppedImage = [UIImage imageWithCGImage:croppedImage.CGImage scale:croppedImage.scale orientation:UIImageOrientationDown];
         CGImageRelease(imageRef);
+        //UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil);
         NSData * data = UIImageJPEGRepresentation(image,0.8);
         [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
     }
 }
 -(void) uploadJudge:(Judgement *)judge {
+    UIDevice *device = [UIDevice currentDevice];
+    NSString  *currentDeviceId = [[device identifierForVendor]UUIDString];
+    judge.deviceId = currentDeviceId;
+    
     NSString *judgeString = [NSString stringWithFormat: @"%@,%@,%hhd,%@", @"JUDGE", judge.plate, judge.isUp, judge.deviceId];
     NSData* data = [judgeString dataUsingEncoding:NSUTF8StringEncoding];
     [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];

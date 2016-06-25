@@ -58,6 +58,8 @@
 
 
 -(void)viewDidLoad {
+    
+    self.judge = [Judgement new];
     self.reconColor = [UIColor yellowColor];
     self.calculatedImage = [UIImage new];
     self.calculatedPreviousFrame = YES;
@@ -119,7 +121,13 @@
     NSData *recognizedData = [userInfo objectForKey:@"JudgeData"];
     LicensePlate *detectedPlate = [LicensePlate mapJudgePlate:recognizedData];
     self.judge.plate = detectedPlate;
-    self.reconPlate = [NSString stringWithFormat:@"%@, score:%d" ,detectedPlate.plateNumbers,detectedPlate.score ];
+    
+    if(self.judge.isUp)
+        self.reconPlate = [NSString stringWithFormat:@"%@, score:%d" ,detectedPlate.plateNumbers,1 ];
+    else{
+        self.reconPlate = [NSString stringWithFormat:@"%@, score:%d" ,detectedPlate.plateNumbers,detectedPlate.score ];
+    }
+    
     if(detectedPlate.score>0){
         self.reconColor = [UIColor greenColor];
     } else if(detectedPlate <0){
@@ -178,9 +186,10 @@
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection
 {
-    // Create a UIImage from the sample buffer data
+    
     if(self.fpsCaptureRate==[self calculateOptimalCaptureTime] && self.calculatedPreviousFrame){
-        UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
+        // Create a UIImage from the sample buffer data
+     UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
         UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationDown];
         
         self.calculatedImage = image;
@@ -189,12 +198,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         CVSquaresWrapper *wrap = [[CVSquaresWrapper alloc] init];
         wrap.rectanglesDetectedBlock = ^(NSArray* pointsArray) {
             [self renderRectangles:pointsArray];
-
         };
-        [wrap squaresInImage:image tolerance:0.01 threshold:50 levels:11];
+        [wrap squaresInImage:image tolerance:0.01 threshold:50 levels:3];
         
         dispatch_async( dispatch_get_main_queue(), ^{
+           
             [self displayLinesFromArray];
+            
             if([self.linesArray count]>0){
                [getConnectionService() uploadPhoto:image cropped:self.cropRectangle];
             }
@@ -204,6 +214,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     } else {
         self.fpsCaptureRate++;
     }
+
+    
 }
 
 -(void) renderRectangles:(NSArray*) pointsArray{
@@ -238,7 +250,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             if(allInScreen){
                 NSMutableArray *rectangle = [NSMutableArray new];
                 
-                
                 [rectangle addObject:top];
                 [rectangle addObject:left];
                 [rectangle addObject:bot];
@@ -270,7 +281,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                     Line *leftLine = [Line new];
                     Line *rightLine = [Line new];
                     
-                   
                     topLine.start = CGPointMake(smallestX, smallestY);
                     
                     topLine.end = CGPointMake(biggestX,smallestY);
@@ -284,13 +294,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                     rightLine.start = topLine.end;
                     rightLine.end = botLine.end;
                     
-                    //rectangle has addded safety space +20
-                    self.cropRectangle = CGRectMake(topLine.start.x-20,topLine.start.y-20, botLine.end.x+20, botLine.end.y+20);
+                    //rectangle has addded safety space
+                    self.cropRectangle = CGRectMake([self scalePoint:topLine.start].x,[self scalePoint:topLine.start].y, [self scalePoint:botLine.end].x, [self scalePoint:botLine.end].y);
                     
-                    [self.linesArray addObject:top];
-                    [self.linesArray addObject:bot];
-                    [self.linesArray addObject:right];
-                    [self.linesArray addObject:left];
+                    [self.linesArray addObject:topLine];
+                    [self.linesArray addObject:botLine];
+                    [self.linesArray addObject:rightLine];
+                    [self.linesArray addObject:leftLine];
                      break;
                 }
             }
@@ -332,8 +342,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         if(self.reconPlate){
             Line *top = [self.linesArray objectAtIndex:0];
             self.plateLabel = [[UILabel alloc ] init];
-            self.plateLabel.frame = CGRectMake(top.start.x, top.start.y-30, top.end.y, 40);
+            self.plateLabel.frame = CGRectMake(top.start.x, top.start.y-30, 280, 40);
             self.plateLabel.text = self.reconPlate;
+            self.plateLabel.numberOfLines = 2;
             self.plateLabel.textColor = [UIColor yellowColor];
             [self.cameraView addSubview:self.plateLabel];
             self.reconPlate = @"";
@@ -350,8 +361,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 
 -(int) calculateOptimalCaptureTime {
-    //  int pingTime = [getConnectionService() pingServer];
-    return 30;
+    int pingTime = [getConnectionService() pingServer];
+    return pingTime;
 }
 
 // Create a UIImage from sample buffer data
@@ -404,13 +415,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
     self.judge.isUp = NO;
     [getConnectionService() uploadJudge:nil];
-    self.reconColor = [UIColor orangeColor];
+    self.reconColor = [UIColor redColor];
 }
 - (IBAction)swipeUp:(id)sender {
 
     self.judge.isUp = YES;
      [getConnectionService() uploadJudge:nil];
-    self.reconColor = [UIColor colorWithRed:0 green:255 blue:100 alpha:1];
+    self.reconColor = [UIColor greenColor];
 }
 
 

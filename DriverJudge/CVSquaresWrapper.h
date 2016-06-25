@@ -38,4 +38,5 @@ tolerance:(CGFloat)tolerance
 threshold:(NSInteger)threshold
                     levels:(NSInteger)levels;
 
+-(void) histogram:(NSString*) path;
 @end
