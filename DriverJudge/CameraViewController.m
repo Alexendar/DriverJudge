@@ -8,7 +8,6 @@
 #import "CameraViewController.h"
 #import "GPUImage.h"
 #import "ConnectionService.h"
-#import "JudgerView.h"
 #import "LicensePlate.h"
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
@@ -23,12 +22,11 @@
 @property (strong, nonatomic) IBOutlet UIView *cameraView;
 @property (strong, nonatomic) IBOutlet UIView *judgerView;
 @property (strong, nonatomic) IBOutlet UIView *gestureView;
+
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeDownGesture;
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeUpGesture;
 - (IBAction)swipeDown:(id)sender;
 - (IBAction)swipeUp:(id)sender;
-
-
 
 @property (strong,nonatomic) AVCaptureSession *session;
 @property (strong,nonatomic) AVCaptureVideoPreviewLayer *previewLayer;
@@ -36,20 +34,22 @@
 
 @property (strong,nonatomic) ConnectionService *connectionService;
 @property (strong,nonatomic) LicensePlate *recievedLicensePlate;
-@property (strong,nonatomic) JudgerView *judgerFrameView;
 
 @property (strong,nonatomic) NSMutableArray *linesArray;
 @property (strong,nonatomic) NSMutableArray *rectangleArray;
 
 
 @property int fpsCaptureRate;
-@property (strong,nonatomic) UIImage * calculatedImage;
+@property (strong,nonatomic) UIImage *calculatedImage;
 @property BOOL calculatedPreviousFrame;
 @property int numberOfCapturedFrames;
 
+
+///Data for plate display
 @property (strong,nonatomic) NSString *reconPlate;
 @property CGRect cropRectangle;
 @property (strong,nonatomic) UIColor *reconColor;
+
 @property (strong, nonatomic) Judgement *judge;
 
 @end
@@ -96,9 +96,7 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    BOOL connected = [getConnectionService() connect];
-    if(connected)
-        self.connectionStatusLabel.text = @"Connected";
+    [getConnectionService() connect];
 
     [super viewDidAppear:YES];
     AVCaptureConnection *previewLayerConnection=self.previewLayer.connection;
@@ -108,30 +106,25 @@
 
 - (void) receiveConnectionStatus:(NSNotification *) notification
 {
-    if ([[notification name] isEqualToString:@"ConnectionStatus"])
-    {
-        self.connectionStatusLabel.text = @"Connection refused";
-    } else {
-        self.connectionStatusLabel.text = @"Notification unrecognized";
-    }
+    NSDictionary *connectionInfo = notification.userInfo;
+    NSString *connectionStatus = [[NSString alloc] initWithData:[connectionInfo objectForKey:@"ConnectionStatus"] encoding:kCFStringEncodingUTF8];
+    self.connectionStatusLabel.text = connectionStatus;
 }
 
-- (void) receiveJudgeNotification:(NSNotification *) notification{
-    NSDictionary *userInfo = notification.userInfo;
-    NSData *recognizedData = [userInfo objectForKey:@"JudgeData"];
+- (void) receiveJudgeNotification:(NSNotification *) notification {
+    
+    NSDictionary *judgeInfo = notification.userInfo;
+    NSData *recognizedData = [judgeInfo objectForKey:@"JudgeData"];
+    
     LicensePlate *detectedPlate = [LicensePlate mapJudgePlate:recognizedData];
-    self.judge.plate = detectedPlate;
+    self.reconPlate = detectedPlate.plateNumbers;
     
-    if(self.judge.isUp)
-        self.reconPlate = [NSString stringWithFormat:@"%@, score:%d" ,detectedPlate.plateNumbers,1 ];
-    else{
-        self.reconPlate = [NSString stringWithFormat:@"%@, score:%d" ,detectedPlate.plateNumbers,detectedPlate.score ];
-    }
-    
-    if(detectedPlate.score>0){
+    if(detectedPlate.score > 0) {
         self.reconColor = [UIColor greenColor];
-    } else if(detectedPlate <0){
+    } else if (detectedPlate.score < 0) {
         self.reconColor = [UIColor redColor];
+    } else {
+        self.reconColor = [UIColor yellowColor];
     }
 }
 
@@ -146,7 +139,7 @@
     // Configure the session to produce lower resolution video frames, if your
     // processing algorithm can cope. We'll specify medium quality for the
     // chosen device.
-    session.sessionPreset = AVCaptureSessionPreset640x480;
+    session.sessionPreset = AVCaptureSessionPreset1920x1080;
     
     // Find a suitable AVCaptureDevice
     AVCaptureDevice *device = [AVCaptureDevice
@@ -188,7 +181,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
     
     if(self.fpsCaptureRate==[self calculateOptimalCaptureTime] && self.calculatedPreviousFrame){
-        // Create a UIImage from the sample buffer data
+        
      UIImage *sourceImage =[self imageFromSampleBuffer:sampleBuffer];
         UIImage *image =[UIImage imageWithCGImage:sourceImage.CGImage scale:sourceImage.scale orientation:UIImageOrientationDown];
         
@@ -196,9 +189,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         self.numberOfCapturedFrames++;
         
         CVSquaresWrapper *wrap = [[CVSquaresWrapper alloc] init];
+        
         wrap.rectanglesDetectedBlock = ^(NSArray* pointsArray) {
             [self renderRectangles:pointsArray];
         };
+        
         [wrap squaresInImage:image tolerance:0.01 threshold:50 levels:3];
         
         dispatch_async( dispatch_get_main_queue(), ^{
@@ -221,8 +216,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 -(void) renderRectangles:(NSArray*) pointsArray{
     self.linesArray = [NSMutableArray new];
     self.rectangleArray = [NSMutableArray new];
- 
-    //podzielic na cztery
+
     if([pointsArray count]%4==0 && [pointsArray count]>=4){
         for(int i = 0; i< [pointsArray count]; i+=4){
             //points are detected randomly. those top,left,right names mean nothing
@@ -412,16 +406,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (IBAction)swipeDown:(id)sender {
-
-    self.judge.isUp = NO;
     [getConnectionService() uploadJudge:nil];
-    self.reconColor = [UIColor redColor];
 }
 - (IBAction)swipeUp:(id)sender {
-
-    self.judge.isUp = YES;
-     [getConnectionService() uploadJudge:nil];
-    self.reconColor = [UIColor greenColor];
+    [getConnectionService() uploadJudge:nil];
 }
 
 

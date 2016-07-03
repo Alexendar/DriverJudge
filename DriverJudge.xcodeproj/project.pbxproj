@@ -27,7 +27,6 @@
 		2888F5DA1C957AA0003A0429 /* LicensePlate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888F5D91C957AA0003A0429 /* LicensePlate.m */; };
 		289281181CA957500004012C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 289281171CA957500004012C /* Main.storyboard */; };
 		28AB327A1C7A56B000BECA63 /* JudgerComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AB32791C7A56B000BECA63 /* JudgerComponent.xib */; };
-		28AB32801C7A5D8800BECA63 /* JudgerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AB327F1C7A5D8800BECA63 /* JudgerView.m */; };
 		28C3A4281CDC9CA500273F8F /* Judgement.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C3A4271CDC9CA500273F8F /* Judgement.m */; };
 		28C3A42D1CE5196300273F8F /* libCocoaAsyncSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C3A42C1CE5196300273F8F /* libCocoaAsyncSocket.a */; };
 		28D709161CBED31D008E32A8 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D709151CBED31D008E32A8 /* SimplePing.m */; };
@@ -70,8 +69,6 @@
 		28A89D5E1CB58FD4004164DD /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
 		28A89D601CB59008004164DD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		28AB32791C7A56B000BECA63 /* JudgerComponent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JudgerComponent.xib; sourceTree = "<group>"; };
-		28AB327E1C7A5D8800BECA63 /* JudgerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JudgerView.h; path = ../JudgerView.h; sourceTree = "<group>"; };
-		28AB327F1C7A5D8800BECA63 /* JudgerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JudgerView.m; path = ../JudgerView.m; sourceTree = "<group>"; };
 		28B3B0331CB437050033B86D /* libTesseractOCRiOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTesseractOCRiOS.a; path = "Pods/../build/Debug-iphoneos/libTesseractOCRiOS.a"; sourceTree = "<group>"; };
 		28C3A4261CDC9CA500273F8F /* Judgement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Judgement.h; sourceTree = "<group>"; };
 		28C3A4271CDC9CA500273F8F /* Judgement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Judgement.m; sourceTree = "<group>"; };
@@ -142,7 +139,6 @@
 				2888F5D41C957A53003A0429 /* NetworkService */,
 				2813D2CD1C7E75F000E39BC1 /* Categories */,
 				28D3E6E11C7D025B0011811C /* ViewControllers */,
-				28D3E6E21C7D02850011811C /* Views */,
 				28C3A4291CDE95D300273F8F /* Models */,
 				28684D901C77E756002B0749 /* Supporting Files */,
 			);
@@ -197,15 +193,6 @@
 				28684DAB1C77E80F002B0749 /* CameraViewController.m */,
 			);
 			name = ViewControllers;
-			sourceTree = "<group>";
-		};
-		28D3E6E21C7D02850011811C /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				28AB327E1C7A5D8800BECA63 /* JudgerView.h */,
-				28AB327F1C7A5D8800BECA63 /* JudgerView.m */,
-			);
-			name = Views;
 			sourceTree = "<group>";
 		};
 		2E51D2E5B2487D9993476BE3 /* Pods */ = {
@@ -372,7 +359,6 @@
 				28C3A4281CDC9CA500273F8F /* Judgement.m in Sources */,
 				28684D951C77E756002B0749 /* AppDelegate.m in Sources */,
 				2888F5D31C8C210C003A0429 /* UIImage+Binarization.m in Sources */,
-				28AB32801C7A5D8800BECA63 /* JudgerView.m in Sources */,
 				28684DAC1C77E80F002B0749 /* CameraViewController.m in Sources */,
 				2888F5DA1C957AA0003A0429 /* LicensePlate.m in Sources */,
 			);

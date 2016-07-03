@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage(Binarization)
-+ (UIImage *) doBinarize:(UIImage *)sourceImage;
-+ (UIImage *) grayImage :(UIImage *)inputImage;
-+ (UIImage *)rotateImage:(UIImage*)image byDegree:(CGFloat)degrees;
+- (UIImage *) doBinarize:(UIImage *)sourceImage;
+- (UIImage *) grayImage :(UIImage *)inputImage;
+- (UIImage *)rotateImage:(UIImage*)image byDegree:(CGFloat)degrees;
 - (UIColor *)colorAtPosition:(CGPoint)position;
 - (UIImage*) fixOrientation;
 @end

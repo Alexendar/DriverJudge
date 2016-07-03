@@ -162,13 +162,8 @@ static int const port = 44444;
     }
 }
 -(void) uploadJudge:(Judgement *)judge {
-    UIDevice *device = [UIDevice currentDevice];
-    NSString  *currentDeviceId = [[device identifierForVendor]UUIDString];
-    judge.deviceId = currentDeviceId;
-    
-    NSString *judgeString = [NSString stringWithFormat: @"%@,%@,%hhd,%@", @"JUDGE", judge.plate, judge.isUp, judge.deviceId];
-    NSData* data = [judgeString dataUsingEncoding:NSUTF8StringEncoding];
-    [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
+ 
+  
 }
 
 

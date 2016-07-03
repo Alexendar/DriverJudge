@@ -13,7 +13,7 @@
 @implementation UIImage(Binarization)
 
 
-+ (UIImage *) doBinarize:(UIImage *)sourceImage
+- (UIImage *) doBinarize:(UIImage *)sourceImage
 {
     //first off, try to grayscale the image using iOS core Image routine
     UIImage * grayScaledImg = [self grayImage:sourceImage];
@@ -30,7 +30,7 @@
     return retImage;
 }
 
-+ (UIImage *) grayImage :(UIImage *)inputImage
+- (UIImage *) grayImage :(UIImage *)inputImage
 {
     // Create a graphic context.
     UIGraphicsBeginImageContextWithOptions(inputImage.size, NO, 1.0);
@@ -50,7 +50,7 @@
 static CGFloat DegreesToRadians(CGFloat degrees) {return degrees * M_PI / 180;};
 
 
-+ (UIImage *)rotateImage:(UIImage*)image byDegree:(CGFloat)degrees
+- (UIImage *)rotateImage:(UIImage*)image byDegree:(CGFloat)degrees
 {
     UIView *rotatedViewBox = [[UIView alloc] initWithFrame:CGRectMake(0,0,image.size.width, image.size.height)];
     CGAffineTransform t = CGAffineTransformMakeRotation(DegreesToRadians(degrees));
