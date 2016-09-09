@@ -1,4 +1,3 @@
 # DriverJudge
-app for judging drivers based on license plate
-
-WORK IN PROGRESS
+Mobile application for detecting license plates squares in real time.
+Needs server for the OCR.
