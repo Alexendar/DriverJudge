@@ -17,13 +17,30 @@
 @implementation Judgement
 
 -(instancetype) initWithJudge: (BOOL) judgement number: (NSString*) numbers {
-    self = [super init];
-    self.isUp = judgement;
-    self.plateNumbers = numbers;
-    UIDevice *device = [UIDevice currentDevice];
-    NSString  *currentDeviceId = [[device identifierForVendor]UUIDString];
-    self.deviceId = currentDeviceId;
+    if (self = [super init]) {
+        self.isUp = judgement;
+        self.plateNumbers = numbers;
+        UIDevice *device = [UIDevice currentDevice];
+        NSString  *currentDeviceId = [[device identifierForVendor]UUIDString];
+        self.deviceId = currentDeviceId;
+    }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init]) {
+        self.plateNumbers = [decoder decodeObjectForKey:@"plateNumbers"];
+        self.isUp = [decoder decodeBoolForKey:@"isUp"];
+        self.deviceId = [decoder decodeObjectForKey:@"deviceId"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.plateNumbers forKey:@"plateNumbers"];
+    [coder encodeInt:self.isUp forKey:@"isUp"];
+    [coder encodeObject:self.deviceId forKey:@"deviceId"];
 }
 
 @end

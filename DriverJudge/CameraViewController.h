@@ -10,4 +10,7 @@
 
 @interface CameraViewController :  UIViewController <UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *connectionStatusLabel;
+-(CGSize) scaleSize: (CGSize) size;
+-(CGPoint) scalePoint:(CGPoint) point;
+-(CGRect) scaleRectUpSize: (CGRect) rect;
 @end

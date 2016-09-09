@@ -10,12 +10,13 @@
 #import "Constants.h"
 #import "inttypes.h"
 
-@interface ConnectionService()
 
+@interface ConnectionService()
+@property (strong,nonatomic) CameraViewController * vcUnderControl;
 @end
 @implementation ConnectionService
 
-static NSString * const host = @"192.168.8.104";
+static NSString * const host = @"192.168.8.102";
 static int const port = 44444;
 
 +(ConnectionService*) sharedInstance {
@@ -28,7 +29,8 @@ static int const port = 44444;
 
     return _sharedService;
 }
--(BOOL) connect {
+-(BOOL) connectWithVC: (CameraViewController *) vc {
+    self.vcUnderControl = vc;
     CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)host, port, &readStream, &writeStream);
     
     inputStream = (__bridge_transfer NSInputStream *)readStream;
@@ -40,6 +42,25 @@ static int const port = 44444;
     [inputStream open];
     [outputStream open];
 
+    CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    
+    return YES;
+}
+
+-(BOOL) connect {
+    
+    CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)host, port, &readStream, &writeStream);
+    
+    inputStream = (__bridge_transfer NSInputStream *)readStream;
+    outputStream = (__bridge_transfer NSOutputStream *)writeStream;
+    [inputStream setDelegate:self];
+    [outputStream setDelegate:self];
+    [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [inputStream open];
+    [outputStream open];
+    
     CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
     CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
     
@@ -150,25 +171,27 @@ static int const port = 44444;
     
     NSLog(@"%@ : %@", io, event);
 }
+
 -(void)uploadPhoto: (UIImage*) image cropped:(CGRect)cropRect{
     if(cropRect.size.width>0){
-        CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+       
+        CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], CGRectMake(50, 150, 1100, 350));
         UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
         croppedImage = [UIImage imageWithCGImage:croppedImage.CGImage scale:croppedImage.scale orientation:UIImageOrientationDown];
         CGImageRelease(imageRef);
-        //UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil);
-        NSData * data = UIImageJPEGRepresentation(image,0.8);
+
+        NSData * data = UIImageJPEGRepresentation(croppedImage,0.8);
         [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: data];
     }
 }
+
 -(void) uploadJudge:(Judgement *)judge {
- 
-  
+    NSData *dataOnObject = [NSKeyedArchiver archivedDataWithRootObject:judge];
+    [self stream:outputStream handleEvent:NSStreamEventHasSpaceAvailable withData: dataOnObject];
 }
 
-
 -(int) pingServer {
-    int pong  = 30;
+    int pong  = 20;
     return pong;
 }
 

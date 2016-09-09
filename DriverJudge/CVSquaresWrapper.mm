@@ -26,29 +26,17 @@
                              levels:(NSInteger)levels
 {
     UIImage* result = nil;
-    
-    //convert from UIImage to cv::Mat openCV image format
-    //this is a category on UIImage
     cv::Mat matImage = [UIImage CVMat:image];
-    
-    
-    //call the c++ class static member function
-    //we want this function signature to exactly
-    //mirror the form of the calling method
     matImage = CVSquares::detectedSquaresInImage (matImage, tolerance, threshold, levels);
-    
-    
-    //convert back from cv::Mat openCV image format
-    //to UIImage image format (category on UIImage)
     result = [UIImage imageFromCVMat:matImage];
     
     return result;
 }
+
 -(NSArray*) squaresInImage:(UIImage*) image
 tolerance:(CGFloat)tolerance
 threshold:(NSInteger)threshold
                              levels:(NSInteger)levels {
-    
     
     cv::Mat matImage = [UIImage CVMat:image];
 

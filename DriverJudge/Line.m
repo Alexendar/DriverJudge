@@ -25,7 +25,7 @@
 {
     CGFloat d = (p2.x - p1.x)*(p4.y - p3.y) - (p2.y - p1.y)*(p4.x - p3.x);
     if (d == 0)
-        return nil; // rownolegle
+        return nil;
     CGFloat u = ((p3.x - p1.x)*(p4.y - p3.y) - (p3.y - p1.y)*(p4.x - p3.x))/d;
     CGFloat v = ((p3.x - p1.x)*(p2.y - p1.y) - (p3.y - p1.y)*(p2.x - p1.x))/d;
     if (u < 0.0 || u > 1.0)
@@ -42,11 +42,7 @@
 
 + (BOOL) isIntersecting: (Line*) l1 withLine: (Line*) l2{
     NSValue *res = [Line intersectionOfLineFrom:l1.start to:l1.end withLineFrom:l2.start to:l2.end];
-    if(res){
-        return YES;
-    } else {
-        return NO;
-    }
+    return res == nil;
 }
 
 

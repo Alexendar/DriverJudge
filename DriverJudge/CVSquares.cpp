@@ -58,6 +58,7 @@ vector<vector<Point> > CVSquares::squaresInImage(cv::Mat image, float tol, int t
 // helper function:
 // finds a cosine of angle between vectors
 // from pt0->pt1 and from pt0->pt2
+// 90 will return 0
 static double angle( Point pt1, Point pt2, Point pt0 )
 {
     double dx1 = pt1.x - pt0.x;
@@ -66,6 +67,8 @@ static double angle( Point pt1, Point pt2, Point pt0 )
     double dy2 = pt2.y - pt0.y;
     return (dx1*dx2 + dy1*dy2)/sqrt((dx1*dx1 + dy1*dy1)*(dx2*dx2 + dy2*dy2) + 1e-10);
 }
+
+
 
 // returns sequence of squares detected on the image.
 // the sequence is stored in the specified memory storage

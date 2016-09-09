@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Judgement : NSObject
+@interface Judgement : NSObject<NSCoding>
 
 @end

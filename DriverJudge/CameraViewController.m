@@ -35,10 +35,11 @@
 @property (strong,nonatomic) ConnectionService *connectionService;
 @property (strong,nonatomic) LicensePlate *recievedLicensePlate;
 
+@property int score;
 @property (strong,nonatomic) NSMutableArray *linesArray;
 @property (strong,nonatomic) NSMutableArray *rectangleArray;
 
-
+@property BOOL plateLost;
 @property int fpsCaptureRate;
 @property (strong,nonatomic) UIImage *calculatedImage;
 @property BOOL calculatedPreviousFrame;
@@ -58,7 +59,8 @@
 
 
 -(void)viewDidLoad {
-    
+   self.score = 0;
+    self.plateLost = true;
     self.judge = [Judgement new];
     self.reconColor = [UIColor yellowColor];
     self.calculatedImage = [UIImage new];
@@ -96,8 +98,8 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    [getConnectionService() connect];
-
+    [getConnectionService() connectWithVC: self];
+    self.connectionStatusLabel.text = @"Offline";
     [super viewDidAppear:YES];
     AVCaptureConnection *previewLayerConnection=self.previewLayer.connection;
     if ([previewLayerConnection isVideoOrientationSupported])
@@ -117,11 +119,22 @@
     NSData *recognizedData = [judgeInfo objectForKey:@"JudgeData"];
     
     LicensePlate *detectedPlate = [LicensePlate mapJudgePlate:recognizedData];
-    self.reconPlate = detectedPlate.plateNumbers;
+    if(self.plateLost) {
+        if (detectedPlate.plateNumbers.length >=5 && ![self.recievedLicensePlate.plateNumbers isEqualToString: detectedPlate.plateNumbers]) {
+            self.plateLost = false;
+        }
+    } else {
+        if(fabs(detectedPlate.detectionFrame.origin.x - self.recievedLicensePlate.detectionFrame.origin.x) > 20) {
+            self.plateLost = true;
+        } else {
+        self.reconPlate = detectedPlate.plateNumbers;
+        }
+    }
+    self.recievedLicensePlate = detectedPlate;
     
-    if(detectedPlate.score > 0) {
+    if(self.score > 0) {
         self.reconColor = [UIColor greenColor];
-    } else if (detectedPlate.score < 0) {
+    } else if (self.score < 0) {
         self.reconColor = [UIColor redColor];
     } else {
         self.reconColor = [UIColor yellowColor];
@@ -288,8 +301,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                     rightLine.start = topLine.end;
                     rightLine.end = botLine.end;
                     
-                    //rectangle has addded safety space
-                    self.cropRectangle = CGRectMake([self scalePoint:topLine.start].x,[self scalePoint:topLine.start].y, [self scalePoint:botLine.end].x, [self scalePoint:botLine.end].y);
+                    self.cropRectangle = CGRectMake(smallestX,smallestY, smallestX+ biggestX,smallestY + biggestY);
                     
                     [self.linesArray addObject:topLine];
                     [self.linesArray addObject:botLine];
@@ -316,6 +328,37 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     return point;
 }
 
+-(CGSize) scaleSize: (CGSize) size {
+    float imageSizeX = self.calculatedImage.size.width;
+    float imageSizeY = self.calculatedImage.size.height;
+    float screenSizeX = self.cameraView.frame.size.width;
+    float screenSizeY = self.cameraView.frame.size.height;
+    
+    float scaleX = screenSizeX/imageSizeX;
+    float scaleY = screenSizeY/imageSizeY;
+    
+    size.width*=scaleX;
+    size.height*=scaleY;
+    return size;
+}
+
+-(CGRect) scaleRectUpSize: (CGRect) rect {
+    float imageSizeX = self.calculatedImage.size.width;
+    float imageSizeY = self.calculatedImage.size.height;
+    float screenSizeX = self.cameraView.frame.size.width;
+    float screenSizeY = self.cameraView.frame.size.height;
+    
+    float scaleX = imageSizeX/screenSizeX;
+    float scaleY = imageSizeY/screenSizeY;
+    
+    CGRect r;
+    r.origin.x = rect.origin.x * scaleX;
+    r.origin.y= rect.origin.y * scaleY;
+    r.size.width = rect.size.width * scaleX;
+    r.size.height = rect.size.height * scaleY;
+    return r;
+}
+
 -(void) displayLinesFromArray {
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     shapeLayer.strokeColor = [self.reconColor CGColor];
@@ -337,9 +380,14 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             Line *top = [self.linesArray objectAtIndex:0];
             self.plateLabel = [[UILabel alloc ] init];
             self.plateLabel.frame = CGRectMake(top.start.x, top.start.y-30, 280, 40);
-            self.plateLabel.text = self.reconPlate;
-            self.plateLabel.numberOfLines = 2;
-            self.plateLabel.textColor = [UIColor yellowColor];
+            
+            if(![self.reconPlate isEqual: @"Detecting..."] && ![self.reconPlate isEqual:@""] && self.reconPlate!=nil) {
+                self.plateLabel.text = [NSString stringWithFormat:@"%@ score: %d", self.reconPlate, self.score];
+            } else {
+                self.plateLabel.text = @"Detecting...";
+            }
+            self.plateLabel.numberOfLines = 0;
+            self.plateLabel.textColor = self.reconColor;
             [self.cameraView addSubview:self.plateLabel];
             self.reconPlate = @"";
         }
@@ -356,7 +404,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 -(int) calculateOptimalCaptureTime {
     int pingTime = [getConnectionService() pingServer];
-    return pingTime;
+    return 10;
 }
 
 // Create a UIImage from sample buffer data
@@ -406,10 +454,26 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (IBAction)swipeDown:(id)sender {
-    [getConnectionService() uploadJudge:nil];
+    if(self.score ==0) {
+        self.score = -1;
+        self.reconColor = [UIColor redColor];
+    }
+    if(self.score == 1) {
+        self.score = 0;
+        self.reconColor = [UIColor yellowColor];
+    }
+    [getConnectionService() uploadJudge:self.judge];
 }
 - (IBAction)swipeUp:(id)sender {
-    [getConnectionService() uploadJudge:nil];
+    if(self.score ==0) {
+        self.score = 1;
+        self.reconColor = [UIColor greenColor];
+    }
+    if (self.score == -1) {
+        self.score = 0;
+        self.reconColor = [UIColor yellowColor];
+    }
+    [getConnectionService() uploadJudge:self.judge];
 }
 
 
